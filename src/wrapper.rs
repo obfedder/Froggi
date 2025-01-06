@@ -6,7 +6,7 @@ use anyhow::Result;
 use git2::Repository;
 use tokio::{process::Command, signal};
 
-const FROGGI_REMOTE_URL: &'static str = "https://github.com/AllLiver/Froggi.git";
+const FROGGI_REMOTE_URL: &'static str = "https://github.com/obfedder/Froggi.git";
 const BUILD_TMP_DIR: &'static str = "./tmp/froggi";
 
 #[tokio::main]

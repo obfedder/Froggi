@@ -86,7 +86,7 @@ pub async fn game_clock_display_handler(Path(o): Path<String>) -> impl IntoRespo
     } else if o == "seconds" {
         time_display = (*game_clock / 1000 % 60).to_string();
     } else if o == "both" {
-        if *game_clock > 1000 * 60 {
+        if *game_clock > 1000 * 60 || *game_clock == 60 {
             time_display = format!("{}:{:02}", *game_clock / 1000 / 60, *game_clock / 1000 % 60);
         } else {
             time_display = format!(

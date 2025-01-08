@@ -139,7 +139,7 @@ pub async fn overlay_websocket_handler(
                     4 => "4th",
                     _ => "OT",
                 };
-                if *game_clock >= 1000 * 60 {
+                if *game_clock >= 1000 * 60 || *game_clock == 0 {
                     format!(
                         "{}:{:02} - {}",
                         *game_clock / 1000 / 60,

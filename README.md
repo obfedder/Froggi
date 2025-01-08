@@ -13,11 +13,24 @@ Is a self-hosted & portable (just one binary file!) scoreboard solution that aim
  - ✨ Cross platform (Supports Windows, MacOS, Linux, and Docker)
 
 # Installation
+## Docker
 Froggi is on [Docker Hub](https://hub.docker.com/repository/docker/obfedder/froggi/general).  
 (Docker images are built every stable release, the latest docker image will always be the latest commit on the main branch)  
+- Make sure [Docker](https://www.docker.com/get-started/) is installed
+- Then, create the container
+  - Port is defined with "-p (external):(internal), only change external
+  - You can run "docker ps -a" to see information about all containers (running or not)
+```
+docker create --name froggi -p 80:3000 allliver/froggi
+```
+- Finally, run the container
+```
+docker start froggi
+```
+- Froggi will be accessible under localhost:80 (or whatever port you bound the external port to)
+- For more information, consult [Docker documentation](https://docs.docker.com/)
 
-Alternatively, Docker image archives can be found under [releases](https://github.com/obfedder/Froggi/releases).  
-  
+## Binary
 Prebuilt binaries for Windows and Linux are found under [releases](https://github.com/obfedder/Froggi/releases). If running on MacOS then follow the guide on how to [compile from source](https://github.com/obfedder/Froggi/#compilation).  
 
 # Usage

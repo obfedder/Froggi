@@ -181,6 +181,7 @@ pub fn froggi_router(state: &AppState) -> Router {
         )
         .route("/update/menu", put(update_menu_handler))
         .route("/config-json/form", put(config_json_form_handler))
+        .route("/local-asset/:d/:a", get(local_asset_handler))
         .nest("/", auth_session_routes)
         .nest("/", auth_give_session_routes)
         .with_state(state.clone())

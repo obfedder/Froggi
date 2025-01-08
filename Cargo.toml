@@ -4,6 +4,7 @@ version = "2.0.0"
 license = "MIT"
 edition = "2021"
 default-run = "froggi-worker"
+build = "build.rs"
 
 [dependencies]
 anyhow = "1.0.86"
@@ -28,6 +29,10 @@ tokio-util = "0.7.13"
 tower = "0.5.1"
 tower-http = { version = "0.5.2", features = ["cors"] }
 uuid = { version = "1.8.0", features = ["v4"] }
+
+[build-dependencies]
+anyhow = "1.0.86"
+tar = "0.4.43"
 
 [[bin]]
 name = "froggi"

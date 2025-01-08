@@ -2,6 +2,7 @@
 
 use axum::{
     body::Body,
+    extract::Path,
     http::{header::LOCATION, HeaderValue, StatusCode},
     response::{Html, IntoResponse, Response},
 };
@@ -118,4 +119,8 @@ pub async fn favicon_handler() -> impl IntoResponse {
             include_bytes!("../html/img/favicon.png").to_vec(),
         ))
         .unwrap()
+}
+
+pub async fn local_asset_handler(Path((dir, asset)): Path<(String, String)>) -> impl IntoResponse {
+    let tar_archive_bytes = include_bytes!("../../build-tmp/local-assets.tar");
 }

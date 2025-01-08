@@ -8,7 +8,7 @@
     <meta name="description"
         content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="/local-asset/png/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link rel="preload" href="/teaminfo.js" as="script">
@@ -110,7 +110,7 @@
                 </div>
                 <div class="ti-form-row">
                     <input type="submit" value="Submit" class="ti-submit">
-                    <img class="htmx-indicator" src="/favicon.png">
+                    <img class="htmx-indicator" src="/local-asset/png/favicon.png">
                 </div>
             </form>
             <div class="ti-manage-section">
@@ -124,7 +124,7 @@
                     <label for="file">Import Preset Files:</label>
                     <input type="file" name="file" accept=".tar.gz" multiple required>
                     <input type="submit" value="Submit" class="ti-sponsor-submit">
-                    <img class="htmx-indicator" src="/favicon.png">
+                    <img class="htmx-indicator" src="/local-asset/png/favicon.png">
                   </form>
                 </div>
               </div>
@@ -143,7 +143,7 @@
                 </div>
                 <input type="file" id="sponsor-img" name="sponsor-img" accept=".png,.jpeg,.jpg" multiple required>
                 <input type="submit" value="Submit" class="ti-sponsor-submit">
-                <img class="htmx-indicator" src="/favicon.png">
+                <img class="htmx-indicator" src="/local-asset/png/favicon.png">
             </form>
             <div hx-put="/sponsors/manage" hx-trigger="load, reload-sponsor from:body"></div>
         </div>

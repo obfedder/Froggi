@@ -21,7 +21,7 @@ Froggi is on [Docker Hub](https://hub.docker.com/repository/docker/obfedder/frog
   - Port is defined with "-p (external):(internal), only change external.
   - You can run "docker ps -a" to see information about all containers (running or not)
 ```
-docker create --name froggi -p 80:3000 allliver/froggi
+docker create --name froggi -p 80:3000 obfedder/froggi
 ```
 - Finally, run the container
 ```

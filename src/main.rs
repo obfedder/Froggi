@@ -105,8 +105,8 @@ async fn main() -> Result<()> {
     create_dir_all(format!("./team-presets")).await?;
 
     // Load sponsor img tags
-    load_sponsors().await;
-    load_config().await;
+    load_sponsors().await?;
+    load_config().await?;
 
     let app = froggi_router(&state);
 

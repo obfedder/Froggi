@@ -2,7 +2,7 @@
 
 use axum::{
     http::StatusCode,
-    response::{Html, IntoResponse, Response},
+    response::{Html, IntoResponse},
 };
 
 use crate::{appstate::global::*, printlg, update_checker, REMOTE_CARGO_TOML_URL};
@@ -15,33 +15,24 @@ pub async fn update_handler() -> impl IntoResponse {
             if let Some(tx) = UPDATE_SIGNAL.lock().await.take() {
                 printlg!("Starting update...");
                 let _ = tx.send(());
-                return Response::builder()
-                    .status(StatusCode::OK)
-                    .body(String::from("Starting update..."))
-                    .unwrap();
+                return (StatusCode::OK, String::from("Starting update..."));
             } else {
                 printlg!("Update signal already sent");
-                return Response::builder()
-                    .status(StatusCode::CONFLICT)
-                    .body(String::from("Update already sent!"))
-                    .unwrap();
+                return (StatusCode::CONFLICT, String::from("Update already sent!"));
             }
         } else {
             printlg!("Already up to date!");
-            return Response::builder()
-                .status(StatusCode::METHOD_NOT_ALLOWED)
-                .body(String::from("Already up to date!"))
-                .unwrap();
+            return (
+                StatusCode::METHOD_NOT_ALLOWED,
+                String::from("Already up to date!"),
+            );
         }
     } else {
         printlg!("Failed to make request to {}", REMOTE_CARGO_TOML_URL);
-        return Response::builder()
-            .status(StatusCode::SERVICE_UNAVAILABLE)
-            .body(format!(
-                "Failed to make request to {}",
-                REMOTE_CARGO_TOML_URL
-            ))
-            .unwrap();
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            format!("Failed to make request to {}", REMOTE_CARGO_TOML_URL),
+        );
     }
 }
 

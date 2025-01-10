@@ -3,12 +3,12 @@
 use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
-    response::{Html, IntoResponse, Response},
+    response::{Html, IntoResponse},
     Form,
 };
 use std::collections::HashMap;
 
-use crate::{appstate::global::*, load_config, printlg, AppState, Config};
+use crate::{appstate::global::*, load_config, printlg, AppState, Config, InternalError};
 
 pub async fn popup_handler(
     Path(a): Path<String>,
@@ -68,16 +68,10 @@ pub async fn restart_handler() -> impl IntoResponse {
 
     if let Some(tx) = RESTART_SIGNAL.lock().await.take() {
         let _ = tx.send(());
-        return Response::builder()
-            .status(StatusCode::OK)
-            .body(String::from("Restarting..."))
-            .unwrap();
+        return (StatusCode::OK, "Restarting...");
     } else {
         printlg!("Restart signal already sent");
-        return Response::builder()
-            .status(StatusCode::METHOD_NOT_ALLOWED)
-            .body(String::from("Restart already sent!"))
-            .unwrap();
+        return (StatusCode::METHOD_NOT_ALLOWED, "Restart already sent!");
     }
 }
 
@@ -86,16 +80,10 @@ pub async fn shutdown_handler() -> impl IntoResponse {
 
     if let Some(tx) = SHUTDOWN_SIGNAL.lock().await.take() {
         let _ = tx.send(());
-        return Response::builder()
-            .status(StatusCode::OK)
-            .body(String::from("Shutting down..."))
-            .unwrap();
+        return (StatusCode::OK, "Shutting down...");
     } else {
         printlg!("Shutdown signal already sent");
-        return Response::builder()
-            .status(StatusCode::METHOD_NOT_ALLOWED)
-            .body(String::from("Shutdown already sent!"))
-            .unwrap();
+        return (StatusCode::METHOD_NOT_ALLOWED, "Shutdown already sent!");
     }
 }
 
@@ -103,15 +91,10 @@ pub async fn ping_handler() -> impl IntoResponse {
     return StatusCode::OK;
 }
 
-pub async fn config_json_form_handler() -> impl IntoResponse {
-    let cfg: Config = serde_json::from_str(
-        &tokio::fs::read_to_string("./config.json")
-            .await
-            .expect("Failed to read config.json"),
-    )
-    .expect("Failed to serialize config.json");
+pub async fn config_json_form_handler() -> Result<impl IntoResponse, InternalError> {
+    let cfg: Config = serde_json::from_str(&tokio::fs::read_to_string("./config.json").await?)?;
 
-    return Html::from(format!(
+    return Ok(Html::from(format!(
         "<form hx-post=\"/config-json/set\" hx-swap=\"outerHTML\">
             <label for=\"sponsor-wait-time\">Sponsor roll time:</label>
             <input type=\"number\" name=\"sponsor-wait-time\" placeholder=\"{}\" class=\"number-input\" min=\"0\" >
@@ -126,18 +109,14 @@ pub async fn config_json_form_handler() -> impl IntoResponse {
             <img class=\"htmx-indicator\" src=\"/favicon.png\"></img>
         </form>",
         cfg.sponsor_wait_time, cfg.countdown_opacity, cfg.popup_opacity
-    ));
+    )));
 }
 
 pub async fn config_json_set_handler(
     Form(set_cfg): Form<HashMap<String, String>>,
-) -> impl IntoResponse {
-    let mut config: Config = serde_json::from_str(
-        &tokio::fs::read_to_string("./config.json")
-            .await
-            .expect("Failed to read config.json"),
-    )
-    .expect("Failed to serialize config.json");
+) -> Result<impl IntoResponse, InternalError> {
+    let mut config: Config =
+        serde_json::from_str(&tokio::fs::read_to_string("./config.json").await?)?;
 
     if let Some(val) = set_cfg.get("sponsor-wait-time") {
         if let Ok(sponsor_wait_time) = val.parse::<u64>() {
@@ -161,17 +140,12 @@ pub async fn config_json_set_handler(
         }
     }
 
-    tokio::fs::write(
-        "./config.json",
-        serde_json::to_string_pretty(&config).expect("Failed to serialize config.json"),
-    )
-    .await
-    .expect("Failed to write to config.json");
-    load_config().await;
+    tokio::fs::write("./config.json", serde_json::to_string_pretty(&config)?).await?;
+    load_config().await?;
 
     printlg!("SET config_json: {:?}", config);
 
-    return Html::from(format!(
+    return Ok(Html::from(format!(
         "<form hx-post=\"/config-json/set\" hx-swap=\"outerHTML\">
         <label for=\"sponsor-wait-time\">Sponsor roll time:</label>
         <input type=\"number\" name=\"sponsor-wait-time\" placeholder=\"{}\" class=\"number-input\">
@@ -183,8 +157,8 @@ pub async fn config_json_set_handler(
         <input type=\"number\" name=\"popup-opacity\" placeholder=\"{}\" class=\"number-input\">
             
         <input type=\"submit\" value=\"Submit\">
-        <img class=\"htmx-indicator\" src=\"/favicon.png\" class=\"settings-submit\"></img>
+        <img class=\"htmx-indicator\" src=\"/local-asset/png/favicon.png\" class=\"settings-submit\"></img>
     </form>",
         config.sponsor_wait_time, config.countdown_opacity, config.popup_opacity
-    ));
+    )));
 }

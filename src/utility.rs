@@ -1,14 +1,17 @@
 // Froggi utility library
 
 use anyhow::{anyhow, Result};
+use axum::response::IntoResponse;
 use base64::prelude::*;
 use rand::{thread_rng, Rng};
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use tokio::fs::{create_dir_all, read_dir};
 
 use crate::appstate::global::*;
 
 pub mod login {
+    use anyhow::Result;
     use axum_extra::extract::cookie::{Cookie, CookieJar, SameSite};
     use jsonwebtoken::{decode, DecodingKey, EncodingKey, Validation};
     use rand::{distributions::Alphanumeric, thread_rng, Rng};
@@ -51,14 +54,13 @@ pub mod login {
         exp: usize,
     }
 
-    pub async fn auth_cookie_builder(username: String) -> String {
+    pub async fn auth_cookie_builder(username: String) -> Result<String> {
         if let Ok(secret) = tokio::fs::read_to_string("./secret.key").await {
             let claims = Claims {
                 sub: Uuid::new_v4().to_string(),
                 un: username,
                 exp: (std::time::SystemTime::now()
-                    .duration_since(UNIX_EPOCH)
-                    .expect("Time went backwards")
+                    .duration_since(UNIX_EPOCH)?
                     .as_secs()
                     + std::time::Duration::from_secs(60 * 60 * 24 * 7).as_secs())
                     as usize,
@@ -68,22 +70,15 @@ pub mod login {
                 &jsonwebtoken::Header::default(),
                 &claims,
                 &EncodingKey::from_secret(secret.as_bytes()),
-            )
-            .expect("Could not create auth token!");
+            )?;
 
             let mut config_str = String::new();
 
-            let config_f = File::open("config.json")
-                .await
-                .expect("Could not open config.json");
+            let config_f = File::open("config.json").await?;
             let mut buf_reader = BufReader::new(config_f);
-            buf_reader
-                .read_to_string(&mut config_str)
-                .await
-                .expect("Could not read config.json");
+            buf_reader.read_to_string(&mut config_str).await?;
 
-            let config: Config =
-                serde_json::from_str(&config_str).expect("Could not deserialize config.json");
+            let config: Config = serde_json::from_str(&config_str)?;
 
             let cookie = Cookie::build(("AuthToken", token))
                 .path("/")
@@ -92,19 +87,18 @@ pub mod login {
                 .max_age(cookie::time::Duration::days(7))
                 .same_site(SameSite::Strict);
 
-            cookie.to_string()
+            Ok(cookie.to_string())
         } else {
-            panic!("Could not read secret.key!");
+            panic!("Failed to read secret.key!");
         }
     }
 
-    pub async fn session_cookie_builder() -> String {
+    pub async fn session_cookie_builder() -> Result<String> {
         if let Ok(secret) = tokio::fs::read_to_string("./secret.key").await {
             let claims = SessionClaims {
                 sub: Uuid::new_v4().to_string(),
                 exp: (std::time::SystemTime::now()
-                    .duration_since(UNIX_EPOCH)
-                    .expect("Time went backwards")
+                    .duration_since(UNIX_EPOCH)?
                     .as_secs()
                     + std::time::Duration::from_secs(60 * 60 * 24 * 2).as_secs())
                     as usize,
@@ -114,22 +108,15 @@ pub mod login {
                 &jsonwebtoken::Header::default(),
                 &claims,
                 &EncodingKey::from_secret(secret.as_bytes()),
-            )
-            .expect("Could not create auth token!");
+            )?;
 
             let mut config_str = String::new();
 
-            let config_f = File::open("config.json")
-                .await
-                .expect("Could not open config.json");
+            let config_f = File::open("config.json").await?;
             let mut buf_reader = BufReader::new(config_f);
-            buf_reader
-                .read_to_string(&mut config_str)
-                .await
-                .expect("Could not read config.json");
+            buf_reader.read_to_string(&mut config_str).await?;
 
-            let config: Config =
-                serde_json::from_str(&config_str).expect("Could not deserialize config.json");
+            let config: Config = serde_json::from_str(&config_str)?;
 
             let cookie = Cookie::build(("SessionToken", token))
                 .path("/")
@@ -137,67 +124,57 @@ pub mod login {
                 .http_only(true)
                 .same_site(SameSite::Strict);
 
-            cookie.to_string()
+            Ok(cookie.to_string())
         } else {
             panic!("Could not read secret.key!");
         }
     }
 
-    pub async fn verify_session(jar: CookieJar) -> bool {
+    pub async fn verify_session(jar: CookieJar) -> Result<bool> {
         if let Some(auth_token) = jar.get("SessionToken") {
             let validation = Validation::new(jsonwebtoken::Algorithm::HS256);
 
             let mut secret = String::new();
 
-            let secret_f = File::open("secret.key")
-                .await
-                .expect("Could not open secret.key");
+            let secret_f = File::open("secret.key").await?;
             let mut buf_reader = BufReader::new(secret_f);
-            buf_reader
-                .read_to_string(&mut secret)
-                .await
-                .expect("Could not read secret.key");
+            buf_reader.read_to_string(&mut secret).await?;
 
             if let Ok(_) = decode::<SessionClaims>(
                 &auth_token.value(),
                 &DecodingKey::from_secret(secret.as_bytes()),
                 &validation,
             ) {
-                return true;
+                return Ok(true);
             } else {
-                return false;
+                return Ok(false);
             }
         } else {
-            return false;
+            return Ok(false);
         }
     }
 
-    pub async fn verify_auth(jar: CookieJar) -> bool {
+    pub async fn verify_auth(jar: CookieJar) -> Result<bool> {
         if let Some(auth_token) = jar.get("AuthToken") {
             let validation = Validation::new(jsonwebtoken::Algorithm::HS256);
 
             let mut secret = String::new();
 
-            let secret_f = File::open("secret.key")
-                .await
-                .expect("Could not open secret.key");
+            let secret_f = File::open("secret.key").await?;
             let mut buf_reader = BufReader::new(secret_f);
-            buf_reader
-                .read_to_string(&mut secret)
-                .await
-                .expect("Could not read secret.key");
+            buf_reader.read_to_string(&mut secret).await?;
 
             if let Ok(_) = decode::<Claims>(
                 &auth_token.value(),
                 &DecodingKey::from_secret(secret.as_bytes()),
                 &validation,
             ) {
-                return true;
+                return Ok(true);
             } else {
-                return false;
+                return Ok(false);
             }
         } else {
-            return false;
+            return Ok(false);
         }
     }
 
@@ -311,14 +288,10 @@ impl Teaminfo {
     }
 }
 
-pub async fn load_sponsors() {
-    create_dir_all(format!("./sponsors"))
-        .await
-        .expect("Could not create sponsors directory");
+pub async fn load_sponsors() -> Result<()> {
+    create_dir_all(format!("./sponsors")).await?;
 
-    let mut d = read_dir("./sponsors")
-        .await
-        .expect("Could not read sponsors dir");
+    let mut d = read_dir("./sponsors").await?;
 
     while let Ok(Some(f)) = d.next_entry().await {
         let fname = f.file_name().to_string_lossy().to_string();
@@ -330,9 +303,7 @@ pub async fn load_sponsors() {
             _ => "",
         };
 
-        let f_bytes = tokio::fs::read(f.path())
-            .await
-            .expect("Could not read sponsor image");
+        let f_bytes = tokio::fs::read(f.path()).await?;
 
         *SPONSOR_IDX.lock().await = 0;
         SPONSOR_TAGS.lock().await.push(format!(
@@ -341,19 +312,18 @@ pub async fn load_sponsors() {
             BASE64_STANDARD.encode(f_bytes),
         ))
     }
+
+    Ok(())
 }
 
-pub async fn load_config() {
-    let config: Config = serde_json::from_str(
-        &tokio::fs::read_to_string("./config.json")
-            .await
-            .expect("Failed to read config.json"),
-    )
-    .expect("Failed to deserialize config.json");
+pub async fn load_config() -> Result<()> {
+    let config: Config = serde_json::from_str(&tokio::fs::read_to_string("./config.json").await?)?;
 
     *COUNTDOWN_OPACITY.lock().await = config.countdown_opacity;
     *POPUP_OPACITY.lock().await = config.popup_opacity;
     *SPONSOR_WAIT_TIME.lock().await = config.sponsor_wait_time;
+
+    Ok(())
 }
 
 pub fn id_create(l: u8) -> String {
@@ -376,42 +346,68 @@ pub async fn update_checker() -> Result<(bool, String)> {
     let result = reqwest::get(REMOTE_CARGO_TOML_URL).await;
 
     if let Ok(response) = result {
-        let remote_version_str_raw = response.text().await.expect("Failed to get response text");
-        let remote_version_str = remote_version_str_raw
+        let remote_version_str_raw = response.text().await?;
+        if let Some(find_result) = remote_version_str_raw
             .split("\n")
             .collect::<Vec<&str>>()
             .iter()
             .find(|x| x.starts_with("version = "))
-            .expect("Failed to get remote version")
-            .trim_start_matches("version = \"")
-            .trim_end_matches("\"");
+        {
+            let remote_version_str = find_result
+                .trim_start_matches("version = \"")
+                .trim_end_matches("\"");
 
-        let local_version_str = env!("CARGO_PKG_VERSION");
+            let local_version_str = env!("CARGO_PKG_VERSION");
 
-        let remote_version: Vec<u8> = remote_version_str
-            .split(".")
-            .map(|x| x.parse::<u8>().expect("Failed to parse remote version"))
-            .collect();
-        let local_version: Vec<u8> = local_version_str
-            .split(".")
-            .map(|x| x.parse::<u8>().expect("Failed to parse remote version"))
-            .collect();
+            let remote_version: Vec<u8> = remote_version_str
+                .split(".")
+                .map(|x| x.parse::<u8>().expect("Failed to parse remote version"))
+                .collect();
 
-        let mut out_of_date = false;
+            let local_version: Vec<u8> = local_version_str
+                .split(".")
+                .map(|x| x.parse::<u8>().expect("Failed to parse remote version"))
+                .collect();
 
-        for i in 0..local_version.len() {
-            if remote_version[i] > local_version[i] {
-                out_of_date = true;
-                break;
-            } else if remote_version[i] < local_version[i] {
-                break;
+            let mut out_of_date = false;
+
+            for i in 0..local_version.len() {
+                if remote_version[i] > local_version[i] {
+                    out_of_date = true;
+                    break;
+                } else if remote_version[i] < local_version[i] {
+                    break;
+                }
             }
-        }
 
-        return Ok((out_of_date, String::from(remote_version_str)));
+            return Ok((out_of_date, String::from(remote_version_str)));
+        } else {
+            return Err(anyhow!("Failed to find version in remote cargo.toml"));
+        }
     } else if let Err(e) = result {
         return Err(anyhow!("{}", e));
     } else {
         return Err(anyhow!("Some unexpected error"));
+    }
+}
+
+pub struct InternalError(pub anyhow::Error);
+
+impl IntoResponse for InternalError {
+    fn into_response(self) -> axum::response::Response {
+        (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            format!("Internal server error: {}", self.0),
+        )
+            .into_response()
+    }
+}
+
+impl<E> From<E> for InternalError
+where
+    E: Into<anyhow::Error>,
+{
+    fn from(err: E) -> Self {
+        Self(err.into())
     }
 }

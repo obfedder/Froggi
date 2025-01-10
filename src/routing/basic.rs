@@ -1,12 +1,20 @@
 // Froggi routing (basic)
 
-use std::{io::{Cursor, Read}, path::PathBuf};
 use axum::{
-    body::Body, extract::Path, http::{header::LOCATION, HeaderValue, StatusCode}, response::{Html, IntoResponse, Response}
+    body::Body,
+    extract::Path,
+    http::StatusCode,
+    response::{Html, IntoResponse, Response},
 };
 use reqwest::header::CONTENT_TYPE;
+use std::{
+    io::{Cursor, Read},
+    path::PathBuf,
+};
 use tar::Archive;
 use tokio::{fs::File, task::spawn_blocking};
+
+use crate::InternalError;
 
 pub async fn index_handler() -> impl IntoResponse {
     Html::from(include_str!("../html/index.html"))
@@ -18,16 +26,9 @@ pub async fn teaminfo_handler() -> impl IntoResponse {
 
 pub async fn overlay_handler() -> impl IntoResponse {
     if let Ok(_) = File::open("login.json").await {
-        return Response::builder()
-            .status(StatusCode::OK)
-            .body(String::from(include_str!("../html/overlay.html")))
-            .unwrap();
+        return Html::from(include_str!("../html/overlay.html")).into_response();
     } else {
-        return Response::builder()
-            .status(StatusCode::SEE_OTHER)
-            .header(LOCATION, HeaderValue::from_static("/login/create"))
-            .body(String::new())
-            .unwrap();
+        return (StatusCode::SEE_OTHER, [("location", "/login/create")]).into_response();
     }
 }
 
@@ -40,90 +41,85 @@ pub async fn logs_page_handler() -> impl IntoResponse {
 }
 
 pub async fn css_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header("Content-Type", "text/css")
-        .body(String::from(include_str!("../html/styles.css")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "text/css")],
+        include_str!("../html/styles.css"),
+    )
 }
 
 pub async fn not_found_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::NOT_FOUND)
-        .body(String::from(include_str!("../html/status_codes/404.html")))
-        .unwrap()
+    (
+        StatusCode::NOT_FOUND,
+        include_str!("../html/status_codes/404.html"),
+    )
 }
 
 pub async fn htmx_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/htmx.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/htmx.js"),
+    )
 }
 
 pub async fn ws_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/ws.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/ws.js"),
+    )
 }
 
 pub async fn app_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/app.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/app.js"),
+    )
 }
 
 pub async fn index_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/index.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/index.js"),
+    )
 }
 
 pub async fn overlay_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/overlay.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/overlay.js"),
+    )
 }
 
 pub async fn teaminfo_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/index.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/index.js"),
+    )
 }
 
 pub async fn sanitize_js_handler() -> impl IntoResponse {
-    Response::builder()
-        .status(StatusCode::OK)
-        .header(CONTENT_TYPE, "application/javascript")
-        .body(String::from(include_str!("../html/js/sanitize.js")))
-        .unwrap()
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/sanitize.js"),
+    )
 }
 
-pub async fn local_asset_handler(Path((dir, asset)): Path<(String, String)>) -> impl IntoResponse {
-    let handle = spawn_blocking(move || {
-        let tar_archive_bytes = Cursor::new(include_bytes!("../../build-tmp/local-assets.tar"));
-        let desired_path = PathBuf::from(format!("{}/{}", dir, asset));
-        
-        let mut tar_archive = Archive::new(tar_archive_bytes);
-        let mut entries = tar_archive.entries().expect("Failed to get tar archive entries");
-        
-        while let Some(Ok(mut f)) = entries.next() {
-            let f_path = f.path().expect("Failed to get tar arvhive entry path");
-            let f_ext = f_path.extension();
-            if f_path.to_path_buf() == desired_path {
-                if let Some(ext) = f_ext {
-                    let mime_type: Option<&'static str> = match ext.to_string_lossy().to_string().as_ref() { // All mime types covered (except 3gp and 3g2, as of 1/7/25) in https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types
+pub async fn local_asset_handler(
+    Path((dir, asset)): Path<(String, String)>,
+) -> Result<Response<Body>, InternalError> {
+    let handle: tokio::task::JoinHandle<Result<Response<Body>, anyhow::Error>> = spawn_blocking(
+        move || {
+            let tar_archive_bytes = Cursor::new(include_bytes!("../../build-tmp/local-assets.tar"));
+            let desired_path = PathBuf::from(format!("{}/{}", dir, asset));
+
+            let mut tar_archive = Archive::new(tar_archive_bytes);
+            let mut entries = tar_archive.entries()?;
+
+            while let Some(Ok(mut f)) = entries.next() {
+                let f_path = f.path()?;
+                let f_ext = f_path.extension();
+                if f_path.to_path_buf() == desired_path {
+                    if let Some(ext) = f_ext {
+                        let mime_type: Option<&'static str> = match ext.to_string_lossy().to_string().as_ref() { // All mime types covered (except 3gp and 3g2, as of 1/7/25) in https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types
                         "aac" => Some("audio/aac"),
                         "abw" => Some("application/x-abiword"),
                         "apng" => Some("image/apng"),
@@ -202,35 +198,32 @@ pub async fn local_asset_handler(Path((dir, asset)): Path<(String, String)>) -> 
                         "7z" => Some("application/x-7z-compressed"),
                         _ => None
                     };
-                    
-                    if let Some(m) = mime_type {
-                        let mut bytes_vec = Vec::new();
-                        f.read_to_end(&mut bytes_vec).expect("Failed to read archived bytes");
-                        
-                        return Response::builder()
-                            .status(StatusCode::OK)
-                            .header(CONTENT_TYPE, m)
-                            .body(Body::from(bytes_vec))
-                            .unwrap();
+
+                        if let Some(m) = mime_type {
+                            let mut bytes_vec = Vec::new();
+                            f.read_to_end(&mut bytes_vec)?;
+
+                            return Ok(Response::builder()
+                                .status(StatusCode::OK)
+                                .header(CONTENT_TYPE, m)
+                                .body(Body::from(bytes_vec))?);
+                        } else {
+                            return Ok(Response::builder().status(StatusCode::BAD_REQUEST).body(
+                                Body::from("Requested file without corresponding mime type"),
+                            )?);
+                        }
                     } else {
-                        return Response::builder()
+                        return Ok(Response::builder()
                             .status(StatusCode::BAD_REQUEST)
-                            .body(Body::from("Requested file without corresponding mime type"))
-                            .unwrap()
+                            .body(Body::from("Requested directory or file without extension"))?);
                     }
-                } else {
-                    return Response::builder()
-                        .status(StatusCode::BAD_REQUEST)
-                        .body(Body::from("Requested directory or file without extension"))
-                        .unwrap()
                 }
             }
-        }
-        return Response::builder()
-            .status(StatusCode::BAD_REQUEST)
-            .body(Body::from("Requested file doesn't exist"))
-            .unwrap()
-    });
-    
-    return handle.await.expect("Failed to return handle");
+            return Ok(Response::builder()
+                .status(StatusCode::BAD_REQUEST)
+                .body(Body::from("Requested file doesn't exist"))?);
+        },
+    );
+
+    return Ok(handle.await??);
 }

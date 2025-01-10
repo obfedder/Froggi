@@ -2,8 +2,7 @@
 
 use axum::{
     extract::{Path, State},
-    http::StatusCode,
-    response::{Html, IntoResponse, Response},
+    response::{Html, IntoResponse},
 };
 
 use crate::{appstate::global::*, printlg, AppState};
@@ -99,12 +98,9 @@ pub async fn visibility_toggle_handler(
         _ => {}
     }
 
-    return Response::builder()
-        .status(StatusCode::OK)
-        .body(format!(
-            "{} {}",
-            if !modified.1 { "Show" } else { "Hide" },
-            modified.0
-        ))
-        .unwrap();
+    return format!(
+        "{} {}",
+        if !modified.1 { "Show" } else { "Hide" },
+        modified.0
+    );
 }

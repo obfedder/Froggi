@@ -4,8 +4,8 @@ use std::path::PathBuf;
 
 use axum::{
     extract::{Multipart, Path},
-    http::{HeaderName, HeaderValue, StatusCode},
-    response::{Html, IntoResponse, Response},
+    http::StatusCode,
+    response::{Html, IntoResponse},
 };
 use base64::prelude::*;
 use tokio::{
@@ -13,48 +13,36 @@ use tokio::{
     io::AsyncWriteExt,
 };
 
-use crate::{appstate::global::*, id_create, printlg, utility::load_sponsors};
+use crate::{appstate::global::*, id_create, printlg, utility::load_sponsors, InternalError};
 
-pub async fn upload_sponsors_handler(mut form: Multipart) -> impl IntoResponse {
-    create_dir_all(format!("./sponsors"))
-        .await
-        .expect("Could not create sponsors directory");
+pub async fn upload_sponsors_handler(
+    mut form: Multipart,
+) -> Result<impl IntoResponse, InternalError> {
+    create_dir_all(format!("./sponsors")).await?;
 
-    while let Some(field) = form
-        .next_field()
-        .await
-        .expect("Could not get next field of sponsor multipart")
-    {
+    while let Some(field) = form.next_field().await? {
         let id = id_create(12);
-        let mut f = File::create(format!(
-            "./sponsors/{}.{}",
-            id,
-            field.file_name().unwrap().split(".").collect::<Vec<&str>>()[1]
-        ))
-        .await
-        .expect("Could not create sponsor file");
+        if let Some(fname) = field.file_name() {
+            let mut f = File::create(format!(
+                "./sponsors/{}.{}",
+                id,
+                fname.split(".").collect::<Vec<&str>>()[1]
+            ))
+            .await?;
 
-        f.write_all(field.bytes().await.unwrap().as_ref())
-            .await
-            .expect("Could not write to sponsor file");
+            f.write_all(field.bytes().await?.as_ref()).await?;
 
-        printlg!("ADD sponsor: {}", id);
+            printlg!("ADD sponsor: {}", id);
+        }
     }
 
-    load_sponsors().await;
+    load_sponsors().await?;
 
-    return Response::builder()
-        .status(StatusCode::OK)
-        .header(
-            HeaderName::from_static("hx-trigger"),
-            HeaderValue::from_static("reload-sponsor"),
-        )
-        .body(String::new())
-        .unwrap();
+    return Ok((StatusCode::OK, [("hx-trigger", "reload-sponsor")]));
 }
 
-pub async fn sponsors_management_handler() -> impl IntoResponse {
-    let mut d = read_dir("./sponsors").await.unwrap();
+pub async fn sponsors_management_handler() -> Result<impl IntoResponse, InternalError> {
+    let mut d = read_dir("./sponsors").await?;
     let mut html = String::new();
 
     while let Ok(Some(a)) = d.next_entry().await {
@@ -68,9 +56,7 @@ pub async fn sponsors_management_handler() -> impl IntoResponse {
             _ => "",
         };
 
-        let f_bytes = tokio::fs::read(a.path())
-            .await
-            .expect("Could not read sponsor image");
+        let f_bytes = tokio::fs::read(a.path()).await?;
 
         html += &format!(
             "<div class=\"sponsor-wrapper\">
@@ -83,11 +69,13 @@ pub async fn sponsors_management_handler() -> impl IntoResponse {
         );
     }
 
-    return Html::from(html);
+    return Ok(Html::from(html));
 }
 
-pub async fn sponsor_remove_handler(Path(id): Path<String>) -> impl IntoResponse {
-    let mut d = read_dir("./sponsors").await.unwrap();
+pub async fn sponsor_remove_handler(
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, InternalError> {
+    let mut d = read_dir("./sponsors").await?;
     let mut p = PathBuf::new();
 
     while let Ok(Some(a)) = d.next_entry().await {
@@ -103,16 +91,9 @@ pub async fn sponsor_remove_handler(Path(id): Path<String>) -> impl IntoResponse
         }
     }
 
-    remove_file(p).await.expect("Could not remove sponsor file");
+    remove_file(p).await?;
 
     printlg!("REMOVE sponsor: {}", id);
 
-    return Response::builder()
-        .status(StatusCode::OK)
-        .header(
-            HeaderName::from_static("hx-trigger"),
-            HeaderValue::from_static("reload-sponsor"),
-        )
-        .body(String::new())
-        .unwrap();
+    return Ok((StatusCode::OK, [("hx-trigger", "reload-sponsor")]));
 }

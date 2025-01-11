@@ -82,29 +82,35 @@
                     <div class="team-section">
                         <div class="ti-form-row">
                             <label>Home Name:</label>
-                            <input class="ti-text-input" id="home_name" name="home_name" required maxlength="25" type="text" placeholder="Enter home team name">
+                            <input class="ti-text-input" id="home_name" name="home_name" required maxlength="25"
+                                type="text" placeholder="Enter home team name">
                         </div>
                         <div class="ti-form-row">
                             <label>Home Icon:</label>
-                            <input class="ti-image-input" id="home_img" name="home_img" required type="file" accept=".png,.jpeg,.jpg">
+                            <input class="ti-image-input" id="home_img" name="home_img" required type="file"
+                                accept=".png,.jpeg,.jpg">
                         </div>
                         <div class="ti-form-row">
                             <label>Home Jersey Color:</label>
-                            <input class="ti-color-input" id="home_color" name="home_color" required type="color" value="#007BFF">
+                            <input class="ti-color-input" id="home_color" name="home_color" required type="color"
+                                value="#007BFF">
                         </div>
                     </div>
                     <div class="team-section">
                         <div class="ti-form-row">
                             <label>Away Name:</label>
-                            <input class="ti-text-input" id="away_name" name="away_name" required maxlength="25" type="text" placeholder="Enter away team name">
+                            <input class="ti-text-input" id="away_name" name="away_name" required maxlength="25"
+                                type="text" placeholder="Enter away team name">
                         </div>
                         <div class="ti-form-row">
                             <label>Away Icon:</label>
-                            <input class="ti-image-input" id="away_img" name="away_img" required type="file" accept=".png,.jpeg,.jpg">
+                            <input class="ti-image-input" id="away_img" name="away_img" required type="file"
+                                accept=".png,.jpeg,.jpg">
                         </div>
                         <div class="ti-form-row">
                             <label>Away Jersey Color:</label>
-                            <input class="ti-color-input" id="away_color" name="away_color" required type="color" value="#ff8601">
+                            <input class="ti-color-input" id="away_color" name="away_color" required type="color"
+                                value="#ff8601">
                         </div>
                     </div>
                 </div>
@@ -113,40 +119,42 @@
                     <img class="htmx-indicator" src="/local-asset/png/favicon.png">
                 </div>
             </form>
-            <div class="ti-manage-section">
-                <div class="ti-selector-container">
-                  <h2>Select team Presets</h2>
-                  <div class="team-selector" hx-put="/teaminfo/selector" hx-trigger="load, reload-selector from:body"></div>
+            <h1>Select Team Presets</h1>
+            <div class="ti-selector-container">
+                <div class="team-selector" hx-put="/teaminfo/selector" hx-trigger="load, reload-selector from:body">
                 </div>
-                <div class="ti-import-container">
-                  <h2>Import Preset</h2>
-                  <form class="ti-import-parent" hx-post="/teaminfo/import-preset" hx-swap="none" enctype="multipart/form-data">
+            </div>
+        </div>
+        <div class="sponsor-rectangle">
+            <h1>Import Previous Presets</h1>
+            <div class="ti-import-container">
+                <form class="ti-import-parent" hx-post="/teaminfo/import-preset" hx-swap="none"
+                    enctype="multipart/form-data">
                     <label for="file">Import Preset Files:</label>
                     <input type="file" name="file" accept=".tar.gz" multiple required>
                     <input type="submit" value="Submit" class="ti-sponsor-submit">
-                    <img class="htmx-indicator" src="/local-asset/png/favicon.png">
-                  </form>
-                </div>
-              </div>
-            </div>      
-        <div class="sponsor-rectangle">
+                    <img class="htmx-indicator" src="/local-asset/png/favicon.png" alt="Loading">
+                </form>
+            </div>
             <h1>Sponsors</h1>
-            <form hx-post="/sponsors/upload" hx-swap="none" enctype="multipart/form-data">
+            <form class="ti-sponsor-upload" hx-post="/sponsors/upload" hx-swap="none" enctype="multipart/form-data">
                 <div class="label-container">
-                    <label for="sponsor-img">Sponsor images:</label>
+                    <label for="sponsor-img">Sponsor Images:</label>
                     <div class="info-container">
                         <div class="info-parent">
-                           <box-icon name='info-circle' class="info-circle"></box-icon>
-                           <span class="info-tooltip">Upload 1 or more images to rotate through</span>
+                            <box-icon name="info-circle" class="info-circle"></box-icon>
+                            <span class="info-tooltip">Upload 1 or more images to rotate through.</span>
                         </div>
-                     </div>
+                    </div>
                 </div>
                 <input type="file" id="sponsor-img" name="sponsor-img" accept=".png,.jpeg,.jpg" multiple required>
-                <input type="submit" value="Submit" class="ti-sponsor-submit">
-                <img class="htmx-indicator" src="/local-asset/png/favicon.png">
+                <input type="submit" value="Submit" id="ti-sponsor-submit-button" class="ti-sponsor-submit">
+                <img class="htmx-indicator" src="/local-asset/png/favicon.png" alt="Loading">
             </form>
-            <div hx-put="/sponsors/manage" hx-trigger="load, reload-sponsor from:body"></div>
+            <div class="sponsor-manager" hx-put="/sponsors/manage" hx-trigger="load, reload-sponsor from:body">
+            </div>
         </div>
+
 
 </body>
 

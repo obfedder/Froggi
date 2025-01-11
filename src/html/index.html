@@ -21,7 +21,7 @@
       <script src="/ws.js" defer></script>
    </head>
    <body id="index"hx-ext="ws" ws-connect="/dashboard-websocket">
-      <!--TODO: Fix black text on countdown, Standardize head & secure has fonts in css aswell as combine them, and seperate app.js-->
+      <!--TODO: Style remove button for sponsors, Fix black text on countdown, Standardize head & secure has fonts in css aswell as combine them, and seperate app.js-->
       <div id="backend-css-index"></div>
       <div hx-put="/teaminfo/button-css" hx-trigger="load"></div>
       <nav>
@@ -33,39 +33,39 @@
          <ul class="sidenavbar">
             <li>
                <div class="navbar-content-container">
-                  <box-icon type='solid' name='home' class="ico-white"></box-icon>
+                  <img src="/local-asset/svg/bxs-home.svg" class="ico-white" alt="Home Icon">
                   <a href="/" class="nav-text nav-active">Dashboard</a>
                </div>
             </li>
             <li>
                <div class="navbar-content-container">
-                  <box-icon name='group' class="ico-white"></box-icon>
+                  <img src="/local-asset/svg/bx-group.svg" class="ico-white" alt="Teaminfo icon">
                   <a href="/teaminfo" class="nav-text">Sponsors & Teaminfo</a>
                </div>
             </li>
             <li>
                <div class="navbar-content-container">
-                  <box-icon name='layer' class="ico-white"></box-icon>
+                  <img src="/local-asset/svg/bx-layer.svg" class="ico-white" alt="Overlay icon">
                   <a href="/overlay" target="_blank" rel="noopener noreferrer" class="nav-text">Overlay</a>
                </div>
                </div>
             </li>
             <li>
                <div class="navbar-content-container">
-                  <box-icon name='cog' class="ico-white"></box-icon>
+                  <img src="/local-asset/svg/bx-cog.svg" class="ico-white" alt="Settings icon">
                   <a href="/settings" class="nav-text">Settings</a>
                </div>
             </li>
             <li>
                <div class="navbar-content-container">
-                  <box-icon name='list-ul' class="ico-white"></box-icon>
+                  <img src="/local-asset/svg/bx-list-ul.svg" class="ico-white" alt="Logs icon">
                   <a href="/logs" id="open-logs" class="nav-text">Logs</a>
                </div>
             </li>
             <li>
                <div class="navbar-content-container">
-                  <box-icon name='log-out' class="ico-logout"></box-icon>
-                  <button hx-post="/logout" hx-swap="none" id="log-out" class="nav-text">Logout</button>
+                  <img src="/local-asset/svg/bx-log-out.svg" class="ico-logout" alt="Logout icon">
+                  <a href="#" hx-post="/logout" hx-swap="none" id="log-out" class="nav-text">Logout</a>
                </div>
             </li>
          </ul>

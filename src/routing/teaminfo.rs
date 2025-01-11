@@ -168,9 +168,11 @@ pub async fn teaminfo_preset_selector_handler() -> Result<impl IntoResponse, Int
                 <img class=\"home-logo\" src=\"data:image/{};base64,{}\" alt=\"home-img\" height=\"30px\" width=\"auto\" style=\"border-color: {}; border-style: solid; border-radius: 3px; border-width: 2px\">
                 <p class=\"ti-teampreset-title\">{} vs {}</p>
                 <img class=\"away-logo\" src=\"data:image/{};base64,{}\" alt=\"away-img\" height=\"30px\" width=\"auto\" style=\"border-color: {}; border-style: solid; border-radius: 3px; border-width: 2px;\">
-                <button class=\"ti-select-button\" hx-post=\"/teaminfo/select/{}\" hx-swap=\"none\">Select</button>
-                <button class=\"ti-remove-button\" hx-post=\"/teaminfo/remove/{}\" hx-swap=\"none\">Remove</button>
-                <a class=\"ti-download-button\" href=\"/teaminfo/download-preset/{}\">Download</a>
+                <div class=\"ti-button-container\">
+                    <button class=\"ti-select-button\" hx-post=\"/teaminfo/select/{}\" hx-swap=\"none\">Select</button>
+                    <button class=\"ti-remove-button\" hx-post=\"/teaminfo/remove/{}\" hx-swap=\"none\">Remove</button>
+                    <a class=\"ti-download-button\" href=\"/teaminfo/download-preset/{}\">Download</a>
+                </div>
             </div>",
                 home_tag_type,
                 BASE64_STANDARD.encode(home_img_bytes),

@@ -3,25 +3,25 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
+      <meta name="description" content="Froggi is a self-hosted & portable scoreboard solution that provides a free and intuitive sports broadcasting overlay.">
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="white">
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black">
       <title>Dashboard</title>
-      <meta name="description" content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="white"/>
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black"/>
-      <link rel="stylesheet" href="styles.css">
       <link rel="icon" href="/local-asset/png/favicon.png">
+      <link rel="stylesheet" href="styles.css">
+      <link rel="preload" href="styles.css" as="style">
       <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-      <link rel="preload" href="styles.css" as="style">
-      <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js" integrity="sha512-kWH92pHUC/rcjpSMu19lT+H6TlZwZCAftg9AuSw+AVYSdEKSlXXB8o6g12mg5f+Pj5xO40A7ju2ot/VdodCthw==" crossorigin="anonymous"></script> <!--Licensed with MIT-->
-      <script src="https://unpkg.com/sanitize-html@2.13.1/index.js" integrity="sha512-wmecYPj53t22fg3RXuWA/dCMhXvxclEz/pqKwHkDkklNuUG5RID+mSe+AMN5+oh/zIjP8GA2fSrInbxA1Fl5UA==" crossorigin="anonymous"></script> <!--Licensed with MIT-->
+      <script src="/local-asset/libraries/sanitize-html.js"></script>
       <script src="/htmx.js"></script>
       <script src="/app.js" defer></script>
       <script src="/index.js" defer></script>
       <script src="/sanitize.js" defer></script>
       <script src="/ws.js" defer></script>
    </head>
+
    <body id="index"hx-ext="ws" ws-connect="/dashboard-websocket">
-      <!--TODO: Style remove button for sponsors, Fix black text on countdown, Standardize head & secure has fonts in css aswell as combine them, and seperate app.js-->
+      <!--TODO:  Fix black text on countdown, Standardize head & secure has fonts in css aswell as combine them, and seperate app.js-->
       <div id="backend-css-index"></div>
       <div hx-put="/teaminfo/button-css" hx-trigger="load"></div>
       <nav>

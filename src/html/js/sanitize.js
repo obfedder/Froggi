@@ -1,10 +1,13 @@
 function handleSecureInput(event) {
     const inputElement = event.target;
-    const sanitized = sanitizeInput(inputElement.value);
+    const sanitized = sanitizeInput(inputElement.value); 
     inputElement.value = sanitized; 
 }
 
 function sanitizeInput(input) {
-    return input.replace(/[^a-zA-Z0-9\s]/g, ''); 
+    // Replace special characters with their encoded equivalents
+    return input.replace(/[<>"'\/]/g, (char) => {
+        const charMap = { '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;' };
+        return charMap[char];
+    });
 }
-

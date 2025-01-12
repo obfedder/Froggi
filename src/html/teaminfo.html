@@ -29,50 +29,50 @@
 <body id="ti-body">
     <nav>
         <button class="hamburger-menu">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
         </button>
         <ul class="sidenavbar">
-            <li>
-                <div class="navbar-content-container">
-                    <box-icon type='solid' name='home' class="ico-white"></box-icon>
-                    <a href="/" class="nav-text">Dashboard</a>
-                </div>
-            </li>
-            <li>
-                <div class="navbar-content-container">
-                    <box-icon name='group' class="ico-white"></box-icon>
-                    <a href="/teaminfo" class="nav-text nav-active">Sponsors & Teaminfo</a>
-                </div>
-            </li>
-            <li>
-                <div class="navbar-content-container">
-                    <box-icon name='layer' class="ico-white"></box-icon>
-                    <a href="/overlay" target="_blank" rel="noopener noreferrer" class="nav-text">Overlay</a>
-                </div>
-                </div>
-            </li>
-            <li>
-                <div class="navbar-content-container">
-                    <box-icon name='cog' class="ico-white"></box-icon>
-                    <a href="/settings" class="nav-text">Settings</a>
-                </div>
-            </li>
-            <li>
-                <div class="navbar-content-container">
-                    <box-icon name='list-ul' class="ico-white"></box-icon>
-                    <a href="/logs" id="open-logs" class="nav-text">Logs</a>
-                </div>
-            </li>
-            <li>
-                <div class="navbar-content-container">
-                    <box-icon name='log-out' class="ico-logout"></box-icon>
-                    <a href="/" id="log-out" class="nav-text">Logout</a>
-                </div>
-            </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bxs-home.svg" class="ico-white" alt="Home Icon">
+                 <a href="/" class="nav-text">Dashboard</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-group.svg" class="ico-white" alt="Teaminfo icon">
+                 <a href="/teaminfo" class="nav-text nav-active">Sponsors & Teaminfo</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-layer.svg" class="ico-white" alt="Overlay icon">
+                 <a href="/overlay" target="_blank" rel="noopener noreferrer" class="nav-text">Overlay</a>
+              </div>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-cog.svg" class="ico-white" alt="Settings icon">
+                 <a href="/settings" class="nav-text">Settings</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-list-ul.svg" class="ico-white" alt="Logs icon">
+                 <a href="/logs" id="open-logs" class="nav-text">Logs</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-log-out.svg" class="ico-logout" alt="Logout icon">
+                 <a href="#" hx-post="/logout" hx-swap="none" id="log-out" class="nav-text">Logout</a>
+              </div>
+           </li>
         </ul>
-    </nav>
+     </nav>
 
     <div class="ti-container">
         <div class="ti-rectangle">

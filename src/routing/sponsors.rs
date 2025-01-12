@@ -59,9 +59,9 @@ pub async fn sponsors_management_handler() -> Result<impl IntoResponse, Internal
         let f_bytes = tokio::fs::read(a.path()).await?;
 
         html += &format!(
-            "<div class=\"sponsor-wrapper\">
+            "<div class=\"ti-sponsor-wrapper\">
                 <img src=\"data:image/{};base64,{}\" alt=\"away-img\" height=\"30px\" width=\"auto\">
-                <button class=\"remove-button\" hx-post=\"/sponsors/remove/{}\" hx-swap=\"none\">Remove</button>
+                <button class=\"ti-sponsor-remove-button\" hx-post=\"/sponsors/remove/{}\" hx-swap=\"none\">Remove</button>
             </div>",
             mime,
             BASE64_STANDARD.encode(f_bytes),

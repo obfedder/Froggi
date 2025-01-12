@@ -2211,7 +2211,7 @@ form label {
 }
 
 .ti-match-selector,
-.sponsor-wrapper {
+.ti-sponsor-wrapper {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
@@ -2220,6 +2220,11 @@ form label {
   margin-bottom: 0.5rem;
   overflow: hidden;
   width: 58.8vw;
+}
+
+.ti-sponsor-wrapper {
+    width: 27.7vw;
+    margin-top: 0.2vh;
 }
 
 .ti-match-selector .home-logo,
@@ -2239,6 +2244,7 @@ form label {
 }
 
 .ti-select-button,
+.ti-sponsor-remove-button,
 .ti-remove-button,
 .ti-download-button {
   background-color: var(--color-green);
@@ -2254,8 +2260,9 @@ form label {
 }
 
 .ti-button-container {
-    float: right;
-    align-items: flex-end;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: flex-end; 
 }
 
 .ti-teampreset-title {
@@ -2272,7 +2279,8 @@ form label {
   background-color: #2fce69;
 }
 
-.ti-remove-button {
+.ti-remove-button,
+.ti-sponsor-remove-button {
   background-color: var(--color-selected);
 }
 

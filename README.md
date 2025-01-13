@@ -48,10 +48,10 @@ If running under Docker, simply start the container.
 # Roadmap
 Froggi is an indev project so changes are very likley.
 Here are some features/updates planned in no particular order
- - [] 🗺️ Options for sport-specific features and customizations
- - [] 🗺️ Pop-up animations, and support for .gif animations (in an 16:9 or 1920x1080 aspect ratio)
- - [] 🗺️ A first party bitfocus companion plugin
- - [] 🗺️ Frontend settings saving via the backend
+ - [ ] 🗺️ Options for sport-specific features and customizations
+ - [ ] 🗺️ Pop-up animations, and support for .gif animations (in an 16:9 or 1920x1080 aspect ratio)
+ - [ ] 🗺️ A first party bitfocus companion plugin
+ - [ ] 🗺️ Frontend settings saving via the backend
 
 # Platform support
 ### Windows

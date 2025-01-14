@@ -1,3 +1,3 @@
-sanitize-html.js -text
-htmx.js -text
-ws.js -text
+sanitize-html.js linguist-vendored
+htmx.js linguist-vendored
+ws.js linguist-vendored

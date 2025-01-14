@@ -5,6 +5,8 @@
 **F**lexible **R**eal-time **O**verlay for **G**ame **G**raphics and **I**nformation  
 Is a self-hosted & portable (just one binary file!) scoreboard solution that aims to provide an intuitive and simple sports broadcasting overlay.
 
+Made by obfedder and crgodfrey :)
+
 # Features
  - ✨ Optical character recognition (OCR) using [froggi-ocr](https://github.com/obfedder/froggi-ocr) and [scoresight-ocr](https://github.com/locaal-ai/scoresight)
  - ✨ Authentication through an API key in an HTTP header (allowing for authentication for use with Bitfocus Companion, and other use cases with http)

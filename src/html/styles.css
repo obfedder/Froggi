@@ -2,7 +2,7 @@
 body {
   background-color: var(--color-background);
   color: var(--text-color, #ffffff);
-  font-family: "sawarabi-gothic-regular", "varela-round-regular", "fira-sans-regular", sans-serif;
+  font-family:  "sawarabi-gothic-regular", "varela-round-regular", "fira-sans-regular", sans-serif;
   font-weight: 500;
   font-style: normal;
   font-size: 0.8vw;
@@ -296,13 +296,6 @@ body::-webkit-scrollbar {
     src: url('/local-asset/fonts/fira-sans.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
-}
-
-@font-face {
-  font-family: 'franklin-gothic-regular';
-  src: url('/local-asset/fonts/franklin-gothic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1720,7 +1713,6 @@ button:hover {
   background-image: -o-radial-gradient(right bottom, farthest-side, rgba(0, 0, 0, 0) 0%, #1a1a1a 100%);
   background-image: radial-gradient(farthest-side at right bottom, rgba(0, 0, 0, 0) 0%, #1a1a1a 100%);
   line-height: 3.75rem;
-  font-family: "franklin-gothic-regular", "sawarabi-gothic-regular", "varela-round-regular", "fira-sans-regular", sans-serif;
 }
 
 .create-login-container {
@@ -1736,7 +1728,6 @@ button:hover {
 
 .create-login-header {
   color: var(--text-color, #fff);
-  font-family: "varela-round-regular", "fira-sans-regular", sans-serif;
 }
 
 .rotating-text-container {
@@ -1754,6 +1745,7 @@ button:hover {
   height: 3.75rem;
   line-height: 3.75rem;
   overflow: hidden;
+  text-decoration: underline;
   display: flex;
   justify-content: center;
   line-height: 3.75rem;
@@ -1861,31 +1853,26 @@ button:hover {
 
 .rotating-text-1 {
   color: lightcoral;
-  text-decoration: underline;
   text-decoration-color: lightcoral;
 }
 
 .rotating-text-2 {
   color: lightgreen;
-  text-decoration: underline;
   text-decoration-color: lightgreen;
 }
 
 .rotating-text-3 {
   color: lightblue;
-  text-decoration: underline;
   text-decoration-color: lightblue;
 }
 
 .rotating-text-4 {
   color: lightsalmon;
-  text-decoration: underline;
   text-decoration-color: lightsalmon;
 }
 
 .rotating-text-5 {
   color: lightseagreen;
-  text-decoration: underline;
   text-decoration-color: lightseagreen;
 }
 
@@ -2290,8 +2277,9 @@ form label {
 }
 
 .ti-button-container {
-  display: flex;
-  margin-left: auto;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: flex-end; 
 }
 
 .ti-teampreset-title {
@@ -2311,10 +2299,6 @@ form label {
 .ti-remove-button,
 .ti-sponsor-remove-button {
   background-color: var(--color-selected);
-}
-
-.ti-sponsor-remove-button {
-  margin-left: auto;
 }
 
 #sponsor-img {

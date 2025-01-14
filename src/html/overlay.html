@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
+    <title>Overlay/Chromakey</title>
+    <meta name="description" content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/local-asset/png/favicon.png">
+    <content security-policy="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'; worker-src 'self'; block-all-mixed-content; upgrade-insecure-requests; require-sri-for script style; report-to default">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <content security policy="frame-ancestors 'none';">
+    <link rel="preload" href="/app.js" as="script">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <script src="/overlay.js" defer></script>
+    <script src="/htmx.js"></script>
+    <script src="/ws.js" defer></script>
+</head>
+
+
+<body class="overlay" id="overlay-body" hx-ext="ws" ws-connect="/overlay-websocket">
+    <div id="backend-css-overlay"></div>
+    <div hx-put="/overlay/team-border-css" hx-trigger="load"></div>
+    <div class="ol-parent-container">
+        <div class="ol-container">
+            <div class="ol-home-box">
+                <div hx-put="/icon/home" hx-trigger="load"></div>
+                <div class="ol-team-name" hx-put="/teaminfo/name/home" hx-trigger="load"></div>
+            </div>
+            <div id="ol-score" class="ol-score-box">0-0</div>
+            <div class="ol-away-box">
+                <div hx-put="/icon/away" hx-trigger="load"></div>
+                <div class="ol-team-name" hx-put="/teaminfo/name/away" hx-trigger="load"></div>
+            </div>
+            <div class="ol-time-quarter-box">
+                <div id="ol-time" class="ol-time-quarter">0:00 - 1st</div>
+            </div>
+            <div id="ol-down" class="ol-down-togo-box">1st & 0</div>
+        </div>
+    </div>
+    <div id="countdown-box"></div>
+    <div class="ol-popup-container" id="ol-popupContainer"></div>
+    <div id="sponsor-roll"></div>
+    </div>
+</body>
+
+</html>

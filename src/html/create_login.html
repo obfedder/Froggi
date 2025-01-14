@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
+    <title>Create Login</title>
+    <meta name="description" content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" href="/local-asset/png/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preload" href="styles.css" as="style">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script> <!--Licensed with MIT-->
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="htmx-config" content='{"includeIndicatorStyles": false}'>
+    <script src="/htmx.js"></script>
+    <script src="/app.js" defer></script>
+    <script src="/ws.js" defer></script>
+</head>
+
+<body hx-history="false" id="create-login-body">
+    <div class="create-login-container">
+        <div class="rotating-text-container">
+            <h3 class="rotating-text-title">Froggi is</h3>
+            <div class="rotating-text">
+                <ul>
+                    <li class="rotating-text-1">Fast</li>
+                    <li class="rotating-text-2">Secure</li>
+                    <li class="rotating-text-3">Portable</li>
+                    <li class="rotating-text-1">Lightweight</li>
+                    <li class="rotating-text-4">Simple</li>
+                    <li class="rotating-text-5">Reliable</li>
+                    <li class="rotating-text-1">Fast</li>
+                    <li class="rotating-text-2">Secure</li>
+                    <li class="rotating-text-3">Portable</li>
+                    <li class="rotating-text-1">Lightweight</li>
+                    <li class="rotating-text-4">Simple</li>
+                    <li class="rotating-text-5">Reliable</li>
+                </ul>
+            </div>
+        </div>
+        <input type="checkbox" id="show-create-login-form" class="show-create-login-form-checkbox">
+        <label for="show-create-login-form" class="get-started-button">Get Started</label>
+
+        <div class="create-login-form" id="createLoginForm">
+            <canvas id="background"></canvas>
+            <div class="create-login-rectangle">
+                <h1 class="create-login-header">Create Froggi Login</h1>
+                <form id="create-login-form" hx-post="/login/create" hx-swap="innerHTML" hx-target="#message_create_login" onsubmit="return validateForm()">
+                    <label class="create-login-header" for="username">Username:</label>
+                    <input class="create-login-input" id="create-login-username" type="text" id="username" name="username" oninput="handleInput(event)">
+
+                    <label class="create-login-header" for="password">Password:</label>
+                    <input class="create-login-input" type="password" id="password" name="password" oninput="handleInput(event)">
+
+                    <label class="create-login-header" for="confirm_password">Confirm Password:</label>
+                    <input class="create-login-input" type="password" id="confirm_password" name="confirm_password" oninput="handleInput(event)">
+                    <div id="password_error" class="error"></div>
+
+                    <button type="submit" class="create-login-submit">
+                        <span>Create Login</span>
+                        <box-icon name='log-in'></box-icon>
+                    </button>
+                </form>
+                <div id="message_create_login"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

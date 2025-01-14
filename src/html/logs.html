@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Logs</title>
+    <meta name="description" content="Froggi is a self-hosted & portable scoreboard solution that provides a free and intuitive sports broadcasting overlay.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/local-asset/png/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preload" href="styles.css" as="style">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js" integrity="sha512-kWH92pHUC/rcjpSMu19lT+H6TlZwZCAftg9AuSw+AVYSdEKSlXXB8o6g12mg5f+Pj5xO40A7ju2ot/VdodCthw==" crossorigin="anonymous"></script>
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <script src="/htmx.js"></script>
+    <script src="/app.js" defer></script>
+    <script src="/ws.js" defer></script>
+  </head>
+  <body id="logs-body">
+    <div class="logs-page">
+      <div class="header">
+        <h1>Logs</h1>
+        <nav>
+          <button class="hamburger-menu">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+          </button>
+          <ul class="sidenavbar">
+            <li>
+              <div class="navbar-content-container">
+                <img src="/local-asset/svg/bxs-home.svg" class="ico-white" alt="Home Icon">
+                <a href="/" class="nav-text">Dashboard</a>
+              </div>
+            </li>
+            <li>
+              <div class="navbar-content-container">
+                <img src="/local-asset/svg/bx-group.svg" class="ico-white" alt="Teaminfo Icon">
+                <a href="/teaminfo" class="nav-text">Sponsors & Teaminfo</a>
+              </div>
+            </li>
+            <li>
+              <div class="navbar-content-container">
+                <img src="/local-asset/svg/bx-layer.svg" class="ico-white" alt="Overlay Icon">
+                <a href="/overlay" target="_blank" rel="noopener noreferrer" class="nav-text">Overlay</a>
+              </div>
+            </li>
+            <li>
+              <div class="navbar-content-container">
+                <img src="/local-asset/svg/bx-cog.svg" class="ico-white" alt="Settings Icon">
+                <a href="/settings" class="nav-text">Settings</a>
+              </div>
+            </li>
+            <li>
+              <div class="navbar-content-container">
+                <img src="/local-asset/svg/bx-list-ul.svg" class="ico-white" alt="Logs Icon">
+                <a href="/logs" id="open-logs" class="nav-text nav-active">Logs</a>
+              </div>
+            </li>
+            <li>
+              <div class="navbar-content-container">
+                <img src="/local-asset/svg/bx-log-out.svg" class="ico-logout" alt="Logout Icon">
+                <a href="#" hx-post="/logout" hx-swap="none" id="log-out" class="nav-text">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="content">
+        <main>
+          <div id="popup-content" class="popup-content">
+            <div id="log-content" hx-put="/logs" hx-trigger="load, every 1000ms"></div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

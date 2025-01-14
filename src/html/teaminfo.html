@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0" />
+    <title>Sponsors & Teaminfo</title>
+    <meta name="description"
+        content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/local-asset/png/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preload" href="/teaminfo.js" as="script">
+    <link rel="preload" href="styles.css" as="style">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"
+        integrity="sha512-kWH92pHUC/rcjpSMu19lT+H6TlZwZCAftg9AuSw+AVYSdEKSlXXB8o6g12mg5f+Pj5xO40A7ju2ot/VdodCthw=="
+        crossorigin="anonymous"></script> <!--Licensed with MIT-->
+    <script src="https://unpkg.com/sanitize-html@2.13.1/index.js"
+        integrity="sha512-wmecYPj53t22fg3RXuWA/dCMhXvxclEz/pqKwHkDkklNuUG5RID+mSe+AMN5+oh/zIjP8GA2fSrInbxA1Fl5UA=="
+        crossorigin="anonymous"></script> <!--Licensed with MIT-->
+    <script src="/app.js" defer></script>
+    <script src="/htmx.js"></script>
+    <script src="/sanitize.js" defer></script>
+    <script src="/teaminfo.js" defer></script>
+    <script src="/ws.js" defer></script>
+</head>
+
+<body id="ti-body">
+    <nav>
+        <button class="hamburger-menu">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+        </button>
+        <ul class="sidenavbar">
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bxs-home.svg" class="ico-white" alt="Home Icon">
+                 <a href="/" class="nav-text">Dashboard</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-group.svg" class="ico-white" alt="Teaminfo icon">
+                 <a href="/teaminfo" class="nav-text nav-active">Sponsors & Teaminfo</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-layer.svg" class="ico-white" alt="Overlay icon">
+                 <a href="/overlay" target="_blank" rel="noopener noreferrer" class="nav-text">Overlay</a>
+              </div>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-cog.svg" class="ico-white" alt="Settings icon">
+                 <a href="/settings" class="nav-text">Settings</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-list-ul.svg" class="ico-white" alt="Logs icon">
+                 <a href="/logs" id="open-logs" class="nav-text">Logs</a>
+              </div>
+           </li>
+           <li>
+              <div class="navbar-content-container">
+                 <img src="/local-asset/svg/bx-log-out.svg" class="ico-logout" alt="Logout icon">
+                 <a href="#" hx-post="/logout" hx-swap="none" id="log-out" class="nav-text">Logout</a>
+              </div>
+           </li>
+        </ul>
+     </nav>
+
+    <div class="ti-container">
+        <div class="ti-rectangle">
+            <h1>Team Preset Creation</h1>
+            <form hx-post="/teaminfo/create" hx-swap="none" enctype="multipart/form-data">
+                <div class="ti-preset-grid">
+                    <div class="team-section">
+                        <div class="ti-form-row">
+                            <label>Home Name:</label>
+                            <input class="ti-text-input" id="home_name" name="home_name" required maxlength="25"
+                                type="text" placeholder="Enter home team name">
+                        </div>
+                        <div class="ti-form-row">
+                            <label>Home Icon:</label>
+                            <input class="ti-image-input" id="home_img" name="home_img" required type="file"
+                                accept=".png,.jpeg,.jpg">
+                        </div>
+                        <div class="ti-form-row">
+                            <label>Home Jersey Color:</label>
+                            <input class="ti-color-input" id="home_color" name="home_color" required type="color"
+                                value="#007BFF">
+                        </div>
+                    </div>
+                    <div class="team-section">
+                        <div class="ti-form-row">
+                            <label>Away Name:</label>
+                            <input class="ti-text-input" id="away_name" name="away_name" required maxlength="25"
+                                type="text" placeholder="Enter away team name">
+                        </div>
+                        <div class="ti-form-row">
+                            <label>Away Icon:</label>
+                            <input class="ti-image-input" id="away_img" name="away_img" required type="file"
+                                accept=".png,.jpeg,.jpg">
+                        </div>
+                        <div class="ti-form-row">
+                            <label>Away Jersey Color:</label>
+                            <input class="ti-color-input" id="away_color" name="away_color" required type="color"
+                                value="#ff8601">
+                        </div>
+                    </div>
+                </div>
+                <div class="ti-form-row">
+                    <input type="submit" value="Submit" class="ti-submit">
+                    <img class="htmx-indicator" src="/local-asset/png/favicon.png">
+                </div>
+            </form>
+            <h1>Select Team Presets</h1>
+            <div class="ti-selector-container">
+                <div class="team-selector" hx-put="/teaminfo/selector" hx-trigger="load, reload-selector from:body">
+                </div>
+            </div>
+        </div>
+        <div class="sponsor-rectangle">
+            <h1>Import Previous Presets</h1>
+            <div class="ti-import-container">
+                <form class="ti-import-parent" hx-post="/teaminfo/import-preset" hx-swap="none"
+                    enctype="multipart/form-data">
+                    <label for="file">Import Preset Files:</label>
+                    <input type="file" name="file" accept=".tar.gz" multiple required>
+                    <input type="submit" value="Submit" class="ti-sponsor-submit">
+                    <img class="htmx-indicator" src="/local-asset/png/favicon.png" alt="Loading">
+                </form>
+            </div>
+            <h1>Sponsors</h1>
+            <form class="ti-sponsor-upload" hx-post="/sponsors/upload" hx-swap="none" enctype="multipart/form-data">
+                <div class="label-container">
+                    <label for="sponsor-img">Sponsor Images:</label>
+                    <div class="info-container">
+                        <div class="info-parent">
+                            <box-icon name="info-circle" class="info-circle"></box-icon>
+                            <span class="info-tooltip">Upload 1 or more images to rotate through.</span>
+                        </div>
+                    </div>
+                </div>
+                <input type="file" id="sponsor-img" name="sponsor-img" accept=".png,.jpeg,.jpg" multiple required>
+                <input type="submit" value="Submit" id="ti-sponsor-submit-button" class="ti-sponsor-submit">
+                <img class="htmx-indicator" src="/local-asset/png/favicon.png" alt="Loading">
+            </form>
+            <div class="sponsor-manager" hx-put="/sponsors/manage" hx-trigger="load, reload-sponsor from:body">
+            </div>
+        </div>
+
+
+</body>
+
+</html>

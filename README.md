@@ -53,7 +53,9 @@ Here are some features/updates planned in no particular order
  - [ ] 🗺️ Options for sport-specific features and customizations
  - [ ] 🗺️ Pop-up animations, and support for .gif animations (in an 16:9 or 1920x1080 aspect ratio)
  - [ ] 🗺️ A first party bitfocus companion plugin
- - [ ] 🗺️ Frontend settings saving via the backend
+ - [ ] 🗺️ All frontend settings saving via the backend
+ - [ ] 🗺️ Overlay chromakey color will dynamically change as not to mess with teamcolors.
+
 
 # Platform support
 ### Windows

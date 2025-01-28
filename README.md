@@ -58,12 +58,12 @@ Here are some features/updates planned in no particular order
 # Platform support
 ### Windows
 Froggi has full Windows support (with one exception), and binaries under [releases](https://github.com/obfedder/Froggi/releases).  
-However due to the way Windows signals work, you should _never_ stop Froggi by simply doing Ctrl+c in the terminal (doing so will terminate Froggi instead of letting it shutdown gracefully), instead stop Froggi through the program controls at the bottom of settings in the web interface.  
+However due to the way Windows signals work, you should _never_ stop Froggi by simply doing Ctrl+c in the terminal (doing so will terminate Froggi instead of letting it shutdown gracefully), instead stop Froggi through the program controls at the bottom of the settings page in the web interface.  
 It is heavily suggested to run Froggi under WSL or Docker due to froggi being developed & maintained for linux.
 
 ### MacOS
-Froggi has full MacOS support, however due to the difficulty in cross-compiling for MacOS precompiled binaries are not offered. Detailed instructions on how to [compile from source](https://github.com/obfedder/Froggi/#compilation) are found below.  
-If you are unable/unwanting to compile binaries from the source, it is reccomended to use the official docker image.  
+Froggi has full MacOS support, however due to the difficulty in cross-compiling for MacOS precompiled binaries are not offered for every individual release. Detailed instructions on how to [compile from source](https://github.com/obfedder/Froggi/#compilation) are found below.  
+If you are unable/unwanting to compile binaries from the source, it is reccomended to use the official docker image, or the latest stable release precompiled binary.
 
 ### Linux
 Froggi has full Linux support, and binaries under [releases](https://github.com/obfedder/Froggi/releases).

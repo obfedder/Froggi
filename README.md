@@ -62,13 +62,14 @@ However due to the way Windows signals work, you should _never_ stop Froggi by s
 It is heavily suggested to run Froggi under WSL or Docker due to froggi being developed & maintained for linux.
 
 ### MacOS
-Froggi has full MacOS support, however due to the difficulty in cross-compiling for MacOS precompiled binaries are not offered for every individual release. Detailed instructions on how to [compile from source](https://github.com/obfedder/Froggi/#compilation) are found below.  
-If you are unable/unwanting to compile binaries from the source, it is reccomended to use the official docker image, or the latest stable release precompiled binary.
+Froggi has full macOS support; however, due to the difficulty in cross-compiling for macOS, precompiled binaries are not offered for every individual release. Detailed instructions on how to [compile from source](https://github.com/obfedder/Froggi/#compilation) can be found below.
+If you are unable or unwilling to compile binaries from the source, it is recommended to use the official Docker image or the latest stable release precompiled binary.
+
 
 ### Linux
 Froggi has full Linux support, and binaries under [releases](https://github.com/obfedder/Froggi/releases).
 
-### Docker
+### Docker (Reccomended)
 Froggi has full Docker support, and an image on [Docker Hub](https://hub.docker.com/repository/docker/obfedder/froggi/general).  
 Docker is the reccomended way to run Froggi.  
 

@@ -142,6 +142,7 @@ pub fn froggi_router(state: &AppState) -> Router {
         .route("/app.js", get(app_js_handler))
         .route("/index.js", get(index_js_handler))
         .route("/overlay.js", get(overlay_js_handler))
+        .route("/settings.js", get(settings_js_handler))
         .route("/teaminfo.js", get(teaminfo_js_handler))
         .route("/sanitize.js", get(sanitize_js_handler))
         .route("/ws.js", get(ws_js_handler))

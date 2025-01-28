@@ -202,7 +202,7 @@ body::-webkit-scrollbar {
 }
 
 .login-rectangle {
-  background-color: var(--color-background-contrast, #1d1e22);
+  background-color: #1d1e22;
   padding: 1.56vw;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -512,6 +512,22 @@ a:visited {
   width: 24px;
   height: 24px;
   margin: none;
+}
+
+.ico-info {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background: none;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 1rem;
+  width: 24px;
+  height: 24px;
+  margin: none;
+  fill: turquoise;
+  filter: invert(1) brightness(2);
 }
 
 #log-out {
@@ -1697,6 +1713,8 @@ button:hover {
   align-items: center;
 }
 
+/* Create_login.html */
+
 #create-login-body {
   background-color: #000;
   display: flex;
@@ -1723,11 +1741,11 @@ button:hover {
 
 .rotating-text-title {
   margin-right: 0.4vw;
-  color: var(--text-color, #fff);
+  color: #fff;
 }
 
 .create-login-header {
-  color: var(--text-color, #fff);
+  color: #fff;
 }
 
 .rotating-text-container {
@@ -1808,7 +1826,7 @@ button:hover {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 1.2rem;
-  color: var(--text-color, #fff);
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -1878,7 +1896,7 @@ button:hover {
 
 .create-login-username,
 .create-login-password {
-  color: var(--text-color, #fff);
+  color: #fff;
   font-size: 2rem;
 }
 
@@ -1888,7 +1906,7 @@ button:hover {
   border-radius: 5px;
   background-color: rgb(22, 21, 21);
   border: none;
-  color: var(--text-color);
+  color: #fff;
   height: 3vh;
   border: 1px solid var(--text-color);
   width: calc(100% - 0.5vw);
@@ -1907,7 +1925,7 @@ button:hover {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 1.2rem;
-  color: var(--text-color, #fff);
+  color: #fff;
   box-shadow: rgba(65, 252, 106, 0.2) 0 15px 30px -5px;
   border: none;
   border-radius: 5px;
@@ -1918,7 +1936,7 @@ button:hover {
   align-items: center;
   justify-content: center;
   background-image: linear-gradient(144deg, #6dff40, #3f995d 50%, #00eb14);
-  fill: var(--text-color, #fff);
+  fill: #fff
 }
 
 .create-login-submit span {
@@ -2033,7 +2051,7 @@ button:hover {
   width: 12vw;
   height: 6vw;
   background-color: #111111;
-  color: var(--text-color, #ffffff);
+  color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2051,7 +2069,7 @@ button:hover {
   font-weight: 700;
   text-align: center;
   margin: 0px 0.5vw;
-  color: var(--text-color, #ffffff);
+  color: #ffffff;
   text-overflow: "-";
 }
 
@@ -2532,14 +2550,41 @@ input:checked+.slider:before {
   display: inline-block;
 }
 
-.check-circle {
+.ico-check-circle {
   fill: var(--color-green, #27a644);
-  margin-left: 0.5vw
+  margin-left: 0.5vw;
+  filter: invert(1) brightness(2);
+  margin-left: 0.5vw;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background: none;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 1rem;
+  width: 24px;
+  height: 24px;
+  margin: none;
+  filter: invert(1) brightness(2);
 }
 
-.x-circle {
+.ico-x-circle {
   fill: var(--color-red, #f64747);
-  margin-left: 0.5vw
+  filter: invert(1) brightness(2);
+  margin-left: 0.5vw;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background: none;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 1rem;
+  width: 24px;
+  height: 24px;
+  margin: none;
+  filter: invert(1) brightness(2);
 }
 
 .error-circle {
@@ -2547,7 +2592,7 @@ input:checked+.slider:before {
   margin-left: 0.5vw
 }
 
-.check-circle:hover {
+.ico-check-circle:hover {
   transform: scale(1.1);
 }
 
@@ -2637,7 +2682,7 @@ p.error-message {
 }
 
 .error-code {
-  color: #FFF;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -2683,7 +2728,6 @@ p.error-message {
 }
 
 .info-circle {
-  fill: cyan;
   margin-left: 0.5vw;
 }
 

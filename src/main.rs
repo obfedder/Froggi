@@ -1,8 +1,7 @@
 // Froggi main
-
 #[forbid(unsafe_code)]
 use anyhow::Context;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use base64::prelude::*;
 use rand::Rng;
 use tokio::{
@@ -75,30 +74,41 @@ async fn main() -> Result<()> {
 
     match File::open("config.json").await {
         Ok(_) => {
-            let cfg: Config =
-                serde_json::from_str(&tokio::fs::read_to_string("config.json").await?)?;
+            let config_json = tokio::fs::read_to_string("config.json").await?;
 
-            if cfg.secure_auth_cookie == false {
-                printlg!("! ! ! ! ! ! ! ! ! !");
-                printlg!("WARNING! DISABLING SECURE AUTH COOKIE IN config.json COULD RESULT IN SENDING LOGIN CREDENTIALS OVER UNENCRYPTED TRAFFIC, THIS IS UNSAFE AND SHOULD ONLY BE USED FOR DEVELOPMENT PURPOSES! UNLESS YOU KNOW WHAT YOU ARE DOING, PLEASE ENABLE SECURE AUTH COOKIE.");
-                printlg!("! ! ! ! ! ! ! ! ! !");
+            if let Ok(cfg) = serde_json::from_str::<Config>(&config_json) {
+                if cfg.secure_auth_cookie == false {
+                    printlg!("! ! ! ! ! ! ! ! ! !");
+                    printlg!("WARNING! DISABLING SECURE AUTH COOKIE IN config.json COULD RESULT IN SENDING LOGIN CREDENTIALS OVER UNENCRYPTED TRAFFIC, THIS IS UNSAFE AND SHOULD ONLY BE USED FOR DEVELOPMENT PURPOSES! UNLESS YOU KNOW WHAT YOU ARE DOING, PLEASE ENABLE SECURE AUTH COOKIE.");
+                    printlg!("! ! ! ! ! ! ! ! ! !");
+                }
+            } else if let Ok(cfg) = serde_json::from_str::<ConfigV0>(&config_json) {
+                let new = Config {
+                    secure_auth_cookie: cfg.secure_auth_cookie,
+                    sponsor_wait_time: cfg.sponsor_wait_time,
+                    countdown_opacity: cfg.countdown_opacity,
+                    popup_opacity: cfg.popup_opacity,
+                    ..Config::default()
+                };
+
+                let mut f = File::create("config.json").await?;
+
+                f.write_all(serde_json::to_string_pretty(&new)?.as_bytes())
+                    .await?;
+            } else if let Err(e) = serde_json::from_str::<Config>(&config_json) {
+                return Err(anyhow!("Failed to deserialize config.json with error {}", e));
             }
         }
         Err(_) => {
             printlg!("Initializing config.json");
             let mut f = File::create("config.json").await?;
 
-            let default_config = Config {
-                secure_auth_cookie: true,
-                sponsor_wait_time: 5,
-                countdown_opacity: 0.5,
-                popup_opacity: 0.5,
-            };
-
-            f.write_all(serde_json::to_string_pretty(&default_config)?.as_bytes())
+            f.write_all(serde_json::to_string_pretty(&Config::default())?.as_bytes())
                 .await?;
         }
     }
+
+    let cfg: Config = serde_json::from_str(&tokio::fs::read_to_string("config.json").await?)?;
 
     create_dir_all(format!("./sponsors")).await?;
 
@@ -110,22 +120,27 @@ async fn main() -> Result<()> {
 
     let app = froggi_router(&state);
 
-    if let Ok(listener) = tokio::net::TcpListener::bind("0.0.0.0:3000").await {
-        tokio::spawn(game_clock_process());
-        tokio::spawn(countdown_clock_process());
-        tokio::spawn(sponsor_ticker());
-        tokio::spawn(popup_home_ticker());
-        tokio::spawn(popup_away_ticker());
-        tokio::spawn(auto_update_checker());
-        printlg!(" -> LISTENING ON: 0.0.0.0:3000");
+    let addr = format!("0.0.0.0:{}", cfg.port);
 
-        axum::serve(listener, app)
-            .with_graceful_shutdown(shutdown_signal(restart_rx, shutdown_rx, update_rx))
-            .await
-            .context("Could not serve app")?;
-    } else {
-        panic!("Could not bind tcp listener!");
-    }
+    match tokio::net::TcpListener::bind(&addr).await {
+        Ok(listener) => {
+            tokio::spawn(game_clock_process());
+            tokio::spawn(countdown_clock_process());
+            tokio::spawn(sponsor_ticker());
+            tokio::spawn(popup_home_ticker());
+            tokio::spawn(popup_away_ticker());
+            tokio::spawn(auto_update_checker());
+            printlg!("Listening on {}", addr);
+        
+            axum::serve(listener, app)
+                .with_graceful_shutdown(shutdown_signal(restart_rx, shutdown_rx, update_rx))
+                .await
+                .context("Could not serve app")?;
+        },
+        Err(e) => {
+            return Err(anyhow!("Failed to bind tcp listener with error {}", e));
+        }
+    };
 
     printlg!("Saving app state...");
 

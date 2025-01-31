@@ -103,6 +103,13 @@ pub async fn sanitize_js_handler() -> impl IntoResponse {
     )
 }
 
+pub async fn settings_js_handler() -> impl IntoResponse {
+    (
+        [(CONTENT_TYPE, "application/javascript")],
+        include_str!("../html/js/settings.js"),
+    )
+}
+
 pub async fn local_asset_handler(
     Path((dir, asset)): Path<(String, String)>,
 ) -> Result<Response<Body>, InternalError> {

@@ -264,6 +264,27 @@ pub mod hex {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub secure_auth_cookie: bool,
+    pub port: String,
+    pub sponsor_wait_time: u64,
+    pub countdown_opacity: f32,
+    pub popup_opacity: f32,
+}
+
+impl Config {
+    pub fn default() -> Config {
+        Config {
+            secure_auth_cookie: true,
+            port: String::from("3000"),
+            sponsor_wait_time: 5,
+            countdown_opacity: 0.5,
+            popup_opacity: 0.5,
+        }
+    }
+}
+
+#[derive(Deserialize)]
+pub struct ConfigV0 {
+    pub secure_auth_cookie: bool,
     pub sponsor_wait_time: u64,
     pub countdown_opacity: f32,
     pub popup_opacity: f32,

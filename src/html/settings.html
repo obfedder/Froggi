@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0">
-    <title>Settings</title>
-    <meta name="description" content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/local-asset/png/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-    <link rel="preload" href="/app.js" as="script">
-    <link rel="preload" href="styles.css" as="style">
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js" integrity="sha512-kWH92pHUC/rcjpSMu19lT+H6TlZwZCAftg9AuSw+AVYSdEKSlXXB8o6g12mg5f+Pj5xO40A7ju2ot/VdodCthw==" crossorigin="anonymous"></script>
-    <!--Licensed with MIT-->
-    <script src="/htmx.js"></script>
-    <script src="/app.js" defer></script>
-    <script src="/ws.js" defer></script>
-  </head>
-  <body id="settings-body">
-    <!--⚠️⚠️Updating, api key functions, opacity, and program controls are handled through the backend files, NOT through frontend html⚠️⚠️-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0">
+  <title>Settings</title>
+  <meta name="description"
+    content="Froggi Is a self-hosted & a portable scoreboard solution that aims to provide a free and intuitive sports broadcasting overlay.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="/local-asset/png/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="preload" href="/app.js" as="script">
+  <link rel="preload" href="styles.css" as="style">
+  <script src="/settings.js"></script>
+  <script src="/htmx.js"></script>
+  <script src="/app.js" defer></script>
+  <script src="/ws.js" defer></script>
+</head>
+
+<body id="settings-body">
+  <j Fix box icons, button align <!--⚠️⚠️Updating, api key functions, opacity, and program controls are handled through
+    the backend files, NOT through frontend html⚠️⚠️-->
     <nav>
       <button class="hamburger-menu">
         <span class="line"></span>
@@ -72,16 +75,18 @@
           <div class="settings-info-parent">
             <h2>Reset Scoreboard</h2>
             <div class="settings-info-container">
-              <box-icon name='info-circle' class="info-circle"></box-icon>
-              <span class="info-tooltip">Restores score, clock, & various other score related functions to the original startup state.</span>
+              <img src="/local-asset/svg/bx-info-circle.svg" class="ico-info" alt="Info icon">
+              <span class="info-tooltip">Restores score, clock, & various other score related functions to the original
+                startup state.</span>
             </div>
             <div class="status-settings-icon">
-              <box-icon name='check-circle' type='solid' class="check-circle"></box-icon>
+              <img src="/local-asset/svg/bxs-check-circle.svg" class="ico-check-circle" alt="Check-circle icon">
               <span class="status-tooltip">Saves & syncs across clients</span>
             </div>
           </div>
           <div class="setting">
-            <button class="reset-button" id="reset-button" hx-post="/reset" hx-swap="none" hx-confirm="Resetting scoreboard will clear the currently used preset, score, and clock. Do you wish to proceed?">⚠️Reset⚠️</button>
+            <button class="reset-button" id="reset-button" hx-post="/reset" hx-swap="none"
+              hx-confirm="Resetting scoreboard will clear the currently used preset, score, and clock. Do you wish to proceed?">⚠️Reset⚠️</button>
           </div>
         </div>
       </div>
@@ -90,12 +95,13 @@
           <div class="settings-info-parent">
             <h2>Theme</h2>
             <div class="settings-info-container">
-              <box-icon name='info-circle' class="info-circle"></box-icon>
+              <img src="/local-asset/svg/bx-info-circle.svg" class="ico-info" alt="Info icon">
               <span class="info-tooltip">Switch themes to adapt to different lighting and enhance contrast.</span>
             </div>
             <div class="status-settings-icon">
-              <box-icon name='x-circle' type='solid' class="x-circle"></box-icon>
-              <span class="status-tooltip">This setting is local to your client, meaning it doesn't sync across devices.</span>
+              <img src="/local-asset/svg/bxs-x-circle.svg" class="ico-x-circle" alt="X-circle icon">
+              <span class="status-tooltip">This setting is local to your client, meaning it doesn't sync across
+                devices.</span>
             </div>
           </div>
           <div class="subtext-settings">
@@ -113,16 +119,18 @@
           <div class="settings-info-parent">
             <h2>Overlay Background color</h2>
             <div class="settings-info-container">
-              <box-icon name='info-circle' class="info-circle"></box-icon>
+              <img src="/local-asset/svg/bx-info-circle.svg" class="ico-info" alt="Info icon">
               <span class="info-tooltip">Different background colors are ideal for chromakey use with Froggi.</span>
             </div>
             <div class="status-settings-icon">
-              <box-icon name='x-circle' type='solid' class="x-circle"></box-icon>
-              <span class="status-tooltip">This setting is local to your client, meaning it doesn't sync across devices.</span>
+              <img src="/local-asset/svg/bxs-x-circle.svg" class="ico-x-circle" alt="X-circle icon">
+              <span class="status-tooltip">This setting is local to your client, meaning it doesn't sync across
+                devices.</span>
             </div>
           </div>
           <div class="subtext-settings">
-            <h6>The background color is determined by this color picker, additionally you can set the alpha channel.</h6>
+            <h6>The background color is determined by this color picker, additionally you can set the alpha channel.
+            </h6>
           </div>
         </div>
         <div class="setting">
@@ -138,7 +146,7 @@
           <div class="settings-opacity-parent">
             <h2>Opacity Settings</h2>
             <div class="status-settings-icon">
-              <box-icon name='check-circle' type='solid' class="check-circle"></box-icon>
+              <img src="/local-asset/svg/bxs-check-circle.svg" class="ico-check-circle" alt="Check-circle icon">
               <span class="status-tooltip">Saves & syncs across clients</span>
             </div>
           </div>
@@ -153,8 +161,9 @@
           <div class="settings-info-parent">
             <h2>Professional Mode</h2>
             <div class="status-settings-icon">
-              <box-icon name='x-circle' type='solid' class="x-circle"></box-icon>
-              <span class="status-tooltip">This setting is local to your client, meaning it doesn't sync across devices.</span>
+              <img src="/local-asset/svg/bxs-x-circle.svg" class="ico-x-circle" alt="X-circle icon">
+              <span class="status-tooltip">This setting is local to your client, meaning it doesn't sync across
+                devices.</span>
             </div>
           </div>
           <div class="subtext-settings">
@@ -172,7 +181,8 @@
         <div class="settings-title">
           <h2>API Key</h2>
           <div class="subtext-settings">
-            <h6>The api key is used for OCR & http header authenication, <u>DO NOT SHARE OR SEND OVER UNENCRYPTED TRAFFIC</u>
+            <h6>The api key is used for OCR & http header authenication, <u>DO NOT SHARE OR SEND OVER UNENCRYPTED
+                TRAFFIC</u>
             </h6>
           </div>
           <div hx-put="/api/key/show" hx-trigger="load, hide-api-key from:body"></div>
@@ -182,9 +192,18 @@
         <div class="settings-title">
           <h2>Optical Character Recognition (OCR)</h2>
           <div class="subtext-settings">
-            <h6>Froggi has support for ScoreSight OCR, an open-source program developed by locaal-ai, through froggi-ocr. To set up OCR, download both ScoreSight (<a href="https://github.com/locaal-ai/scoresight" target="_blank">https://github.com/locaal-ai/scoresight</a>) and froggi-ocr (<a href="https://github.com/AllLiver/froggi-ocr" target="_blank">https://github.com/AllLiver/froggi-ocr</a>), then launch both of them and set them up. </h6>
-            <h6>Froggi will automatically use the default name and format of all of ScoreSight's default fields that Froggi also supports. Although if you would like to add downs and to go for American Football, you have to name them "Down" and "To Go" respectively, in ScoreSight. Then make sure froggi-ocr is getting StatusCode 200 OK from both ScoreSight and Froggi.</h6>
-            <h6>Make sure to enable the OCR API in Froggi, or else Froggi will return StatusCode 409 CONFLICT to froggi-ocr.</h6>
+            <h6>Froggi has support for ScoreSight OCR, an open-source program developed by locaal-ai, through
+              froggi-ocr. To set up OCR, download both ScoreSight (<a href="https://github.com/locaal-ai/scoresight"
+                target="_blank">https://github.com/locaal-ai/scoresight</a>) and froggi-ocr (<a
+                href="https://github.com/AllLiver/froggi-ocr"
+                target="_blank">https://github.com/AllLiver/froggi-ocr</a>), then launch both of them and set them up.
+            </h6>
+            <h6>Froggi will automatically use the default name and format of all of ScoreSight's default fields that
+              Froggi also supports. Although if you would like to add downs and to go for American Football, you have to
+              name them "Down" and "To Go" respectively, in ScoreSight. Then make sure froggi-ocr is getting StatusCode
+              200 OK from both ScoreSight and Froggi.</h6>
+            <h6>Make sure to enable the OCR API in Froggi, or else Froggi will return StatusCode 409 CONFLICT to
+              froggi-ocr.</h6>
           </div>
           <div class="setting" hx-put="/ocr/api/button" hx-trigger="load">
             <button class="ocr-button" hx-post="/ocr/api/toggle">OCR API</button>
@@ -194,33 +213,76 @@
       </div>
       <div class="settings-box">
         <div class="settings-title">
+          <div class="settings-info-parent">
+            <h2>Keybind Guide</h2>
+            <div class="settings-info-container">
+              <img src="/local-asset/svg/bx-info-circle.svg" class="ico-info" alt="Info icon">
+              <span class="info-tooltip">View all available keyboard shortcuts for quick control of the score.</span>
+            </div>
+          </div>
+          <div class="subtext-settings">
+            <h6>View keyboard control shortcuts</h6>
+          </div>
+        </div>
+        <div class="setting">
+          <button id="toggle-keybinds" class="button-settings">Show Keybinds</button>
+          <div id="keybind-list" class="keybind-container" style="display: none;">
+            <div class="keybind-section">
+              <h3>Score</h3>
+              <ul>
+                <li><kbd>F</kbd> / <kbd>J</kbd> - Increase Home & Away Score by +1</li>
+                <li><kbd>Space</kbd> - Resume/Pause game clock</li>
+              </ul>
+            </div>
+            <div class="keybind-section">
+              <h3>Downs & To-Go</h3>
+              <ul>
+                <li><kbd>1</kbd> - <kbd>4</kbd> - Set down with the associated number</li>
+                <li><kbd>Z</kbd> - <kbd>M</kbd> - Set To-Go to an value ranging from Hidden[Z] to Goal[M]</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-box">
+        <div class="settings-title">
           <h2>Program Controls</h2>
           <div class="subtext-settings">
             <h6>Manage system restart, shutdown, and updates</h6>
           </div>
-          <button hx-post="/restart" hx-swap="none" class="button-settings" hx-confirm="You are trying to restart Froggi, are you sure?">Restart</button>
-          <button hx-post="/shutdown" hx-swap="none" class="button-settings" hx-confirm="You are trying to shutdown Froggi, are you sure?">Shutdown</button>
+          <button hx-post="/restart" hx-swap="none" class="button-settings"
+            hx-confirm="You are trying to restart Froggi, are you sure?">Restart</button>
+          <button hx-post="/shutdown" hx-swap="none" class="button-settings"
+            hx-confirm="You are trying to shutdown Froggi, are you sure?">Shutdown</button>
         </div>
+      </div>
+      <div class="settings-box" id="settings-wrap">
+        <div class="settings-title">
+          <h2>Attributions</h2>
+          <p>Froggi is developed by <a class="settings-dev-text" href="https://github.com/crgodfrey"
+              target="_blank">@cgodfrey</a> and <a class="settings-dev-text" href="https://github.com/obfedder"
+              target="_blank">@obfedder</a> on GitHub. Froggi is licensed under the permissive <a
+              href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>. </p>
+          <ul>
+            <li>
+              <strong>htmx</strong> - <a href="https://htmx.org/" target="_blank">htmx.org</a> - Library for Ajax &
+              WebSockets
+            </li>
+            <li>
+              <strong>Google Fonts</strong> - <a href="https://fonts.google.com/" target="_blank">fonts.google.com</a> -
+              Open-source font library
+            </li>
+            <li>
+              <strong>Boxicons</strong> - <a href="https://boxicons.com/" target="_blank">boxicons.com</a> - Vector icon
+              set
+            </li>
+            <li>
+              <strong>sanitize-html</strong> - <a href="https://www.npmjs.com/package/sanitize-html"
+                target="_blank">npmjs.com/package/sanitize-html</a> - Library to sanitize HTML to prevent XSS
+            </li>
+          </ul>
         </div>
-        <div class="settings-box" id="settings-wrap">
-          <div class="settings-title">
-            <h2>Attributions</h2>
-            <p>Froggi is developed by <a class="settings-dev-text" href="https://github.com/crgodfrey" target="_blank">@cgodfrey</a> and <a class="settings-dev-text" href="https://github.com/obfedder" target="_blank">@obfedder</a> on GitHub. Froggi is licensed under the permissive <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>. </p>
-            <ul>
-              <li>
-                <strong>htmx</strong> - <a href="https://htmx.org/" target="_blank">htmx.org</a> - Library for Ajax & WebSockets
-              </li>
-              <li>
-                <strong>Google Fonts</strong> - <a href="https://fonts.google.com/" target="_blank">fonts.google.com</a> - Open-source font library
-              </li>
-              <li>
-                <strong>Boxicons</strong> - <a href="https://boxicons.com/" target="_blank">boxicons.com</a> - Vector icon set
-              </li>
-              <li>
-                <strong>sanitize-html</strong> - <a href="https://www.npmjs.com/package/sanitize-html" target="_blank">npmjs.com/package/sanitize-html</a> - Library to sanitize HTML to prevent XSS
-              </li>
-            </ul>
-          </div>
-        </div>
-  </body>
+      </div>
+</body>
+
 </html>

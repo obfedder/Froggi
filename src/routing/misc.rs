@@ -106,7 +106,7 @@ pub async fn config_json_form_handler() -> Result<impl IntoResponse, InternalErr
             <input type=\"number\" name=\"popup-opacity\" placeholder=\"{}\" class=\"number-input\" min=\"0\" max=\"1\" step=\"0.1\">
                 
             <input type=\"submit\" value=\"Submit\" class=\"settings-submit\">
-            <img class=\"htmx-indicator\" src=\"/favicon.png\"></img>
+            <img class=\"htmx-indicator\" src=\"/local-asset/png/favicon.png\"></img>
         </form>",
         cfg.sponsor_wait_time, cfg.countdown_opacity, cfg.popup_opacity
     )));
@@ -147,18 +147,18 @@ pub async fn config_json_set_handler(
 
     return Ok(Html::from(format!(
         "<form hx-post=\"/config-json/set\" hx-swap=\"outerHTML\">
-        <label for=\"sponsor-wait-time\">Sponsor roll time:</label>
-        <input type=\"number\" name=\"sponsor-wait-time\" placeholder=\"{}\" class=\"number-input\">
-        
-        <label for=\"countdown-opacity\">Countdown opacity:</label>
-        <input type=\"number\" name=\"countdown-opacity\" placeholder=\"{}\" class=\"number-input\">
+            <label for=\"sponsor-wait-time\">Sponsor roll time:</label>
+            <input type=\"number\" name=\"sponsor-wait-time\" placeholder=\"{}\" class=\"number-input\" min=\"0\" >
             
-        <label for=\"popup-opacity\">Popup opacity:</label>
-        <input type=\"number\" name=\"popup-opacity\" placeholder=\"{}\" class=\"number-input\">
-            
-        <input type=\"submit\" value=\"Submit\">
-        <img class=\"htmx-indicator\" src=\"/local-asset/png/favicon.png\" class=\"settings-submit\"></img>
-    </form>",
+            <label for=\"countdown-opacity\">Countdown opacity:</label>
+            <input type=\"number\" name=\"countdown-opacity\" placeholder=\"{}\" class=\"number-input\" min=\"0\" max=\"1\" step=\"0.1\">
+                
+            <label for=\"popup-opacity\">Popup opacity:</label>
+            <input type=\"number\" name=\"popup-opacity\" placeholder=\"{}\" class=\"number-input\" min=\"0\" max=\"1\" step=\"0.1\">
+                
+            <input type=\"submit\" value=\"Submit\" class=\"settings-submit\">
+            <img class=\"htmx-indicator\" src=\"/local-asset/png/favicon.png\"></img>
+        </form>",
         config.sponsor_wait_time, config.countdown_opacity, config.popup_opacity
     )));
 }

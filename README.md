@@ -75,6 +75,9 @@ Froggi has full Linux support, and binaries under [releases](https://github.com/
 Froggi has full Docker support, and an image on [Docker Hub](https://hub.docker.com/repository/docker/obfedder/froggi/general).  
 Docker is the reccomended way to run Froggi.  
 
+### Unraid 
+Froggi has a preconfigured Community Apps plugin discoverable through the Apps tab.
+
 # Updating
 Froggi has self-updating capabilities, allowing for easy updates directly through the Settings page whenever a new version is available.  
 Updates are compiled from source, and in order to update Froggi needs all [build dependencies](https://github.com/obfedder/Froggi/#dependencies) installed.  
